@@ -47,7 +47,7 @@ public class CreateRoleChange extends AbstractChange {
     statement.setSuperUser(isSuperUser());
     statement.setLoginAllowed(isLoginAllowed());
 
-    statement.setCreateRole(isCreateRoleAllowed());
+    statement.setCreateRole(isCreateRole());
 
     statement.setEncryptedPassword(isEncryptedPassword());
     statement.setConnectionLimit(getConnectionLimit());
@@ -74,14 +74,6 @@ public class CreateRoleChange extends AbstractChange {
     this.password = password;
   }
 
-  public Boolean isCreateDatabase() {
-    return createDatabase;
-  }
-
-  public void setCreateDatabase(Boolean createDatabase) {
-    this.createDatabase = createDatabase;
-  }
-
   public Boolean isSuperUser() {
     return superUser;
   }
@@ -90,7 +82,15 @@ public class CreateRoleChange extends AbstractChange {
     this.superUser = superUser;
   }
 
-  public Boolean isCreateRoleAllowed() {
+  public Boolean isCreateDatabase() {
+    return createDatabase;
+  }
+
+  public void setCreateDatabase(Boolean createDatabase) {
+    this.createDatabase = createDatabase;
+  }
+
+  public Boolean isCreateRole() {
     return createRole;
   }
 

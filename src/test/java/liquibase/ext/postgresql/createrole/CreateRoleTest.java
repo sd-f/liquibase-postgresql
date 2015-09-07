@@ -116,7 +116,7 @@ public class CreateRoleTest extends BaseTestCase {
     assertEquals("One statement generated", 1, sql.length);
 
     // then
-    assertEquals("Matching statement", "CREATE ROLE my_role SUPERUSER CREATEDB NOCREATEROLE INHERIT LOGIN CONNECTION LIMIT 1 ENCRYPTED PASSWORD 'my_password' VALID UNTIL '2002-05-30 09:00:00.0'", sql[0].toSql());
+    assertEquals("Matching statement", "CREATE ROLE my_role SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN CONNECTION LIMIT 1 ENCRYPTED PASSWORD 'my_password' VALID UNTIL '2002-05-30 09:00:00.0'", sql[0].toSql());
   }
 
   @Test

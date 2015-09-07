@@ -65,29 +65,7 @@ public class CreateRoleGenerator extends AbstractSqlGenerator<CreateRoleStatemen
     sql.append(database.escapeObjectName(statement.getRoleName(), DatabaseObject.class));
     sql.append(" ");
 
-    if (statement.isSuperUser() != null && statement.isSuperUser()) {
-      sql.append("SUPERUSER ");
-    } else {
-      sql.append("NOSUPERUSER ");
-    }
-
-    if (statement.isCreateDatabase() != null && statement.isCreateDatabase()) {
-      sql.append("CREATEDB ");
-    } else {
-      sql.append("NOCREATEDB ");
-    }
-
-    if (statement.isCreateRole() != null && statement.isCreateRole()) {
-      sql.append("CREATEROLE ");
-    } else {
-      sql.append("NOCREATEROLE ");
-    }
-
-    if (statement.isInherit() != null && statement.isInherit()) {
-      sql.append("INHERIT ");
-    } else {
-      sql.append("NOINHERIT ");
-    }
+    appendProperties(sql, statement);
 
     if (statement.isLoginAllowed() != null && statement.isLoginAllowed()) {
       sql.append("LOGIN ");
@@ -120,6 +98,32 @@ public class CreateRoleGenerator extends AbstractSqlGenerator<CreateRoleStatemen
     }
 
     return new Sql[]{new UnparsedSql(sql.toString())};
+  }
+
+  private void appendProperties(StringBuilder sql, CreateRoleStatement statement) {
+    if (statement.isSuperUser() != null && statement.isSuperUser()) {
+      sql.append("SUPERUSER ");
+    } else {
+      sql.append("NOSUPERUSER ");
+    }
+
+    if (statement.isCreateDatabase() != null && statement.isCreateDatabase()) {
+      sql.append("CREATEDB ");
+    } else {
+      sql.append("NOCREATEDB ");
+    }
+
+    if (statement.isCreateRole() != null && statement.isCreateRole()) {
+      sql.append("CREATEROLE ");
+    } else {
+      sql.append("NOCREATEROLE ");
+    }
+
+    if (statement.isInherit() != null && statement.isInherit()) {
+      sql.append("INHERIT ");
+    } else {
+      sql.append("NOINHERIT ");
+    }
   }
 
 }
