@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+            xmlns="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+            elementFormDefault="qualified">
+
+    <!-- vacuum -->
+
+    <xsd:element name="vacuum">
+        <xsd:complexType>
+            <xsd:attribute name="tableName" type="xsd:string" use="required"/>
+            <xsd:attribute name="catalogName" type="xsd:string"/>
+            <xsd:attribute name="schemaName" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- role -->
+
+    <xsd:element name="createRole">
+        <xsd:complexType>
+            <xsd:attribute name="roleName" type="xsd:string" use="required"/>
+            <xsd:attribute name="password" type="xsd:string" use="required"/>
+            <xsd:attribute name="superUser" type="xsd:boolean"/>
+            <xsd:attribute name="createDatabase" type="xsd:boolean"/>
+            <xsd:attribute name="createRole" type="xsd:boolean"/>
+            <xsd:attribute name="inherit" type="xsd:boolean"/>
+            <xsd:attribute name="loginAllowed" type="xsd:boolean"/>
+            <xsd:attribute name="connectionLimit" type="xsd:integer"/>
+            <xsd:attribute name="encryptedPassword" type="xsd:boolean"/>
+            <xsd:attribute name="validUntil" type="xsd:dateTime"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="dropRole">
+        <xsd:complexType>
+            <xsd:attribute name="roleName" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- schema -->
+
+    <xsd:element name="createSchema">
+        <xsd:complexType>
+            <xsd:attribute name="schemaName" type="xsd:string" use="required"/>
+            <xsd:attribute name="authorization" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="dropSchema">
+        <xsd:complexType>
+            <xsd:attribute name="schemaName" type="xsd:string" use="required"/>
+            <xsd:attribute name="restrict" type="xsd:boolean"/>
+            <xsd:attribute name="cascade" type="xsd:boolean"/>
+        </xsd:complexType>
+    </xsd:element>
+
+
+</xsd:schema>
