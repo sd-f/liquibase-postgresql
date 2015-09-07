@@ -1,5 +1,53 @@
 # Usages
 
+## Maven
+
+```xml
+    <!-- ... -->
+	<dependencies>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+		<dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-postgresql</artifactId>
+            <version>3.4-SNAPSHOT</version>
+        </dependency>
+		<!-- ... -->
+	</dependencies>
+	
+	<!-- ... -->
+	
+	<build>
+	    <!-- ... -->
+		<plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <configuration>
+                    <!-- ... -->
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-postgresql</artifactId>
+                        <version>3.4-SNAPSHOT</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+	</build>
+	
+	<!-- ... -->
+```
+
+## changelog.xml
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog

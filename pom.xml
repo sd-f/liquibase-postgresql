@@ -21,6 +21,7 @@
         <junit.version>4.12</junit.version>
         <dbunit.version>2.5.1</dbunit.version>
         <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
+        <snakeyaml.version>1.16</snakeyaml.version>
     </properties>
 
     <licenses>
@@ -86,7 +87,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.16</version>
+            <version>${snakeyaml.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -104,18 +105,12 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
+                        <encoding>UTF-8</encoding>
                         <source>${jdk.version}</source>
                         <target>${jdk.version}</target>
                         <optimize>true</optimize>
                         <debug>true</debug>
                         <encoding>${project.build.sourceEncoding}</encoding>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                        <reportFormat>plain</reportFormat>
                     </configuration>
                 </plugin>
                 <plugin>
