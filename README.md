@@ -1,5 +1,9 @@
 # Usages
 
+## Jira
+
+https://softwaredesign.foundation/jira/projects/LPMP
+
 ## Maven
 
 ```xml

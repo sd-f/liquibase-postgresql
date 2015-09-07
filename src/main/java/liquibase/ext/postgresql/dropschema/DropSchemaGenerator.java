@@ -20,10 +20,9 @@ public class DropSchemaGenerator extends AbstractSqlGenerator<DropSchemaStatemen
   public ValidationErrors validate(DropSchemaStatement statement, Database database, SqlGeneratorChain chain) {
     ValidationErrors validationErrors = new ValidationErrors();
     validationErrors.checkRequiredField("schemaName", statement.getSchemaName());
-    if (statement.isCascade() != null && statement.isRestrict() != null) {
-      if (statement.isCascade() && statement.isRestrict()) {
-        validationErrors.addError("Attributes \"restrict\" and \"cascade\" are excluding");
-      }
+    if (statement.isCascade() != null && statement.isRestrict() != null
+        && statement.isCascade() && statement.isRestrict()) {
+      validationErrors.addError("Attributes \"restrict\" and \"cascade\" are excluding");
     }
     return validationErrors;
   }
