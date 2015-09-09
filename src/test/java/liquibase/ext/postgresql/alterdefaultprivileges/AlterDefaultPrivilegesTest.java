@@ -255,4 +255,35 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
 
   }
 
+  @Test
+  public void alterDefaultPrivilegesRevokeGroupRestrict() throws LiquibaseException, IOException {
+    // given
+    Liquibase liquibase = this.newLiquibase("/alterdefaultprivileges/changelog-revoke-group.test.xml");
+    Database database = liquibase.getDatabase();
+    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+
+    // when
+    changeLog.validate(database);
+    List<ChangeSet> changeSets = changeLog.getChangeSets();
+
+    // then
+    assertEquals("One changesets given", 1, changeSets.size());
+
+    ChangeSet changeSet = changeSets.get(0);
+
+    assertEquals("One change given", 1, changeSet.getChanges().size());
+
+    Change change = changeSet.getChanges().get(0);
+
+    // when
+    Sql[] sql = SqlGeneratorFactory.getInstance()
+        .generateSql(change.generateStatements(database)[0], database);
+
+    assertEquals("One statement generated", 1, sql.length);
+
+    // then
+    assertEquals("Matching statement", "ALTER DEFAULT PRIVILEGES FOR ROLE my_role IN SCHEMA my_schema REVOKE ALL ON TABLES FROM GROUP my_group RESTRICT", sql[0].toSql());
+
+  }
+
 }
