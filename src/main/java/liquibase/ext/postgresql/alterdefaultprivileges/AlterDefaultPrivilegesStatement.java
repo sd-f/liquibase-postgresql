@@ -10,7 +10,7 @@ public class AlterDefaultPrivilegesStatement extends AbstractSqlStatement {
 
   private Boolean revoke = false;
 
-  private Operations operations;
+  private Operations operation;
   private GrantObjects onObjects;
   private String toOrFromRole;
   private Boolean group = false;
@@ -50,12 +50,12 @@ public class AlterDefaultPrivilegesStatement extends AbstractSqlStatement {
     this.revoke = revoke;
   }
 
-  public Operations getOperations() {
-    return operations;
+  public Operations getOperation() {
+    return operation;
   }
 
-  public void setOperations(Operations operations) {
-    this.operations = operations;
+  public void setOperation(Operations operation) {
+    this.operation = operation;
   }
 
   public GrantObjects getOnObjects() {

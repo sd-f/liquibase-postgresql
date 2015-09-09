@@ -13,7 +13,7 @@ import liquibase.serializer.AbstractLiquibaseSerializable;
  */
 public abstract class AbstractGrantChange extends AbstractLiquibaseSerializable {
 
-  private Operations operations;
+  private Operations operation;
   private GrantObjects onObjects;
   private Boolean group = false;
 
@@ -22,12 +22,12 @@ public abstract class AbstractGrantChange extends AbstractLiquibaseSerializable 
     return Constants.NAMESPACE;
   }
 
-  public Operations getOperations() {
-    return operations;
+  public Operations getOperation() {
+    return operation;
   }
 
-  public void setOperations(Operations operations) {
-    this.operations = operations;
+  public void setOperation(Operations operation) {
+    this.operation = operation;
   }
 
   public GrantObjects getOnObjects() {

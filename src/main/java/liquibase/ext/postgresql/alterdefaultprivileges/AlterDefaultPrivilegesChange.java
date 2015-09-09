@@ -37,14 +37,14 @@ public class AlterDefaultPrivilegesChange extends AbstractChange {
       inverseRevoke.setFromRole(getGrant().getToRole());
       inverseRevoke.setGroup(getGrant().getGroup());
       inverseRevoke.setOnObjects(getGrant().getOnObjects());
-      inverseRevoke.setOperations(getGrant().getOperations());
+      inverseRevoke.setOperation(getGrant().getOperation());
       inverse.setRevoke(inverseRevoke);
     } else if (getRevoke() != null) {
       GrantChange inverseGrant = new GrantChange();
       inverseGrant.setToRole(getRevoke().getFromRole());
       inverseGrant.setGroup(getRevoke().getGroup());
       inverseGrant.setOnObjects(getRevoke().getOnObjects());
-      inverseGrant.setOperations(getRevoke().getOperations());
+      inverseGrant.setOperation(getRevoke().getOperation());
       inverse.setGrant(inverseGrant);
     }
 
@@ -80,7 +80,7 @@ public class AlterDefaultPrivilegesChange extends AbstractChange {
   private void setGrantOptions(AbstractGrantChange change, AlterDefaultPrivilegesStatement statement) {
     statement.setGroup(change.getGroup());
     statement.setOnObjects(change.getOnObjects());
-    statement.setOperations(change.getOperations());
+    statement.setOperation(change.getOperation());
   }
 
   public PrivilegesTargetType getForType() {

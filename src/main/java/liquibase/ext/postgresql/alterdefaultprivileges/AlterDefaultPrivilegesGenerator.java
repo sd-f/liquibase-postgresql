@@ -38,6 +38,7 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
 
   private void validateGenericAttributes(ValidationErrors validationErrors, AlterDefaultPrivilegesStatement statement) {
 
+    validationErrors.checkRequiredField("operation", statement.getOperation());
     validationErrors.checkRequiredField("onObjects", statement.getOnObjects());
 
     if (statement.getGroup() != null && statement.getGroup()
@@ -139,7 +140,7 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
 
   private void addGrantOrRevokeOptions(AlterDefaultPrivilegesStatement statement, StringBuilder sql, Database database) {
 
-    sql.append(statement.getOperations());
+    sql.append(statement.getOperation());
 
     sql.append(" ON ");
     sql.append(statement.getOnObjects());

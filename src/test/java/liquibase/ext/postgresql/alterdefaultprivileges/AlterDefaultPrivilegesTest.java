@@ -61,7 +61,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
 
   private void setGenericGrantOptions(AbstractGrantChange grant) {
     grant.setOnObjects(GrantObjects.TABLES);
-    grant.setOperations(Operations.ALL);
+    grant.setOperation(Operations.ALL);
     grant.setGroup(false);
 
   }
@@ -138,6 +138,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
     change.getRevoke().setOnObjects(null);
     change.getRevoke().setGroup(true);
     change.getRevoke().setFromRole("PUBLIC");
+    change.getRevoke().setOperation(null);
 
     // when
     ValidationErrors errors = change.validate(new PostgresDatabase());
@@ -147,6 +148,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
     assertTrue("contains error cascade restrict excluding", errors.getErrorMessages().contains("Attributes \"restrict\" and \"cascade\" are excluding"));
     assertTrue("contains error on objects mandatory", errors.getErrorMessages().contains("onObjects is required"));
     assertTrue("contains error public is no group", errors.getErrorMessages().contains("PUBLIC and group can not be set together"));
+    assertTrue("contains error operation mandatory", errors.getErrorMessages().contains("operation is required"));
   }
 
   @Test
