@@ -8,7 +8,7 @@ package liquibase.ext.postgresql.xml;
  */
 public class Constants {
 
-  public final static String NAMESPACE = "http://www.liquibase.org/xml/ns/dbchangelog-ext";
+  public static final String NAMESPACE = "http://www.liquibase.org/xml/ns/dbchangelog-ext";
 
   private Constants() {
   }
