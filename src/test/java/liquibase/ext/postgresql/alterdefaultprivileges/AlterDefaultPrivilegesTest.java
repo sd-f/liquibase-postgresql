@@ -14,6 +14,7 @@ import liquibase.changelog.DatabaseChangeLog;
 import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.LiquibaseException;
+import liquibase.exception.ValidationErrors;
 import liquibase.ext.postgresql.BaseTestCase;
 import liquibase.ext.postgresql.grant.AbstractGrantChange;
 import liquibase.ext.postgresql.grant.GrantChange;
@@ -25,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -123,6 +125,28 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
     assertEquals(1, sqlStatements.length);
     assertEquals(Boolean.TRUE, ((AlterDefaultPrivilegesStatement) sqlStatements[0]).getRevoke());
     assertEquals("my_other_role", ((AlterDefaultPrivilegesStatement) sqlStatements[0]).getToOrFromRole());
+  }
+
+  @Test
+  public void validate() {
+    // given
+    AlterDefaultPrivilegesChange change = getNewGrantChange(true);
+    change.setTargetRole(null);
+    change.getRevoke().setCascade(true);
+    change.getRevoke().setRestrict(true);
+
+    change.getRevoke().setOnObjects(null);
+    change.getRevoke().setGroup(true);
+    change.getRevoke().setFromRole("PUBLIC");
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error targetRole", errors.getErrorMessages().contains("Attribute \"targetRole\" must be set"));
+    assertTrue("contains error cascade restrict excluding", errors.getErrorMessages().contains("Attributes \"restrict\" and \"cascade\" are excluding"));
+    assertTrue("contains error on objects mandatory", errors.getErrorMessages().contains("Attribute \"onObjects\" must be set"));
+    assertTrue("contains error public is no group", errors.getErrorMessages().contains("PUBLIC and group can not be set together"));
   }
 
   @Test

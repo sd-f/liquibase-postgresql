@@ -20,18 +20,6 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
   public ValidationErrors validate(AlterDefaultPrivilegesStatement statement, Database database, SqlGeneratorChain chain) {
     ValidationErrors validationErrors = new ValidationErrors();
 
-    validateGenericAttributes(validationErrors, statement);
-
-    if (statement.getRevoke()
-        && statement.getCascade() != null && statement.getRestrict() != null
-        && statement.getCascade() && statement.getRestrict()) {
-      validationErrors.addError("Attributes \"restrict\" and \"cascade\" are excluding");
-
-    }
-    return validationErrors;
-  }
-
-  private void validateGenericAttributes(ValidationErrors validationErrors, AlterDefaultPrivilegesStatement statement) {
     if (statement.getForType() != null) {
       if (statement.getTargetRole() == null) {
         validationErrors.addError("Attribute \"targetRole\" must be set");
@@ -41,6 +29,21 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
         }
       }
     }
+
+    validateGenericAttributes(validationErrors, statement);
+
+    if (statement.getRevoke()) {
+      if (statement.getCascade() != null && statement.getRestrict() != null
+          && statement.getCascade() && statement.getRestrict()) {
+        validationErrors.addError("Attributes \"restrict\" and \"cascade\" are excluding");
+      }
+    }
+
+    return validationErrors;
+  }
+
+  private void validateGenericAttributes(ValidationErrors validationErrors, AlterDefaultPrivilegesStatement statement) {
+
     if (statement.getOnObjects() == null) {
       validationErrors.addError("Attribute \"onObjects\" must be set");
     }
