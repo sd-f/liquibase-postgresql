@@ -28,15 +28,18 @@ public class DropSchemaGenerator extends AbstractSqlGenerator<DropSchemaStatemen
   }
 
   /**
-   * creates statement for dropping role in postgres sql
+   * creates statement for dropping role in postgres sql<br />
    * <p>
    * @param statement
    * @param database
    * @param chain
    * @return <p>
-   * @see @ http://www.postgresql.org/docs/8.1/static/sql-dropschema.html where option can be:
-   * <p>
+   * @see @ http://www.postgresql.org/docs/8.1/static/sql-dropschema.html where option can be:<br />
+   * <pre>
+   * {@code
    * DROP SCHEMA name [, ...] [ CASCADE | RESTRICT ]
+   * }
+   * </pre>
    */
   @Override
   public Sql[] generateSql(DropSchemaStatement statement, Database database, SqlGeneratorChain chain) {

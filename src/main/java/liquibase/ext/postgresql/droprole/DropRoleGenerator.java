@@ -24,15 +24,18 @@ public class DropRoleGenerator extends AbstractSqlGenerator<DropRoleStatement> {
   }
 
   /**
-   * creates statement for dropping role in postgres sql
+   * creates statement for dropping role in postgres sql<br />
    * <p>
    * @param statement
    * @param database
    * @param chain
    * @return <p>
-   * @see @ http://www.postgresql.org/docs/8.1/static/sql-droprole.html where option can be:
-   * <p>
+   * @see @ http://www.postgresql.org/docs/9.0/static/sql-droprole.html where option can be:<br />
+   * <pre>
+   * {@code
    * DROP ROLE name [, ...]
+   * }
+   * </pre>
    */
   @Override
   public Sql[] generateSql(DropRoleStatement statement, Database database, SqlGeneratorChain chain) {

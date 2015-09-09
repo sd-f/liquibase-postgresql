@@ -30,33 +30,31 @@ public class CreateRoleGenerator extends AbstractSqlGenerator<CreateRoleStatemen
    * @param statement
    * @param database
    * @param chain
-   * @return <p>
-   * @see @ http://www.postgresql.org/docs/8.1/static/sql-createrole.html where option can be:
-   * <p>
+   * @return <br />
+   * @see @ http://www.postgresql.org/docs/9.0/static/sql-createrole.html where option can be:<br />
+   * <pre>
+   * {@code
    * CREATE ROLE name [ [ WITH ] option [ ... ] ]
    * <p>
-   * SUPERUSER | NOSUPERUSER<p>
-   * | CREATEDB | NOCREATEDB<p>
-   * | CREATEROLE | NOCREATEROLE<p>
-   * | CREATEUSER | NOCREATEUSER<p>
-   * | INHERIT | NOINHERIT<p>
-   * | LOGIN | NOLOGIN<p>
-   * | CONNECTION LIMIT connlimit<p>
+   * where option can be:
+   * <p>
+   * SUPERUSER | NOSUPERUSER
+   * | CREATEDB | NOCREATEDB
+   * | CREATEROLE | NOCREATEROLE
+   * | CREATEUSER | NOCREATEUSER
+   * | INHERIT | NOINHERIT
+   * | LOGIN | NOLOGIN
+   * | CONNECTION LIMIT connlimit
    * | [ ENCRYPTED | UNENCRYPTED ] PASSWORD 'password'
-   * <p>
    * | VALID UNTIL 'timestamp'
-   * <p>
-   * | IN ROLE rolename [, ...]
-   * <p>
-   * | IN GROUP rolename [, ...]
-   * <p>
-   * | ROLE rolename [, ...]
-   * <p>
-   * | ADMIN rolename [, ...]
-   * <p>
-   * | USER rolename [, ...]
-   * <p>
-   * | SYSID uid<p>
+   * | IN ROLE role_name [, ...]
+   * | IN GROUP role_name [, ...]
+   * | ROLE role_name [, ...]
+   * | ADMIN role_name [, ...]
+   * | USER role_name [, ...]
+   * | SYSID uid
+   * }
+   * </pre>
    */
   @Override
   public Sql[] generateSql(CreateRoleStatement statement, Database database, SqlGeneratorChain chain) {

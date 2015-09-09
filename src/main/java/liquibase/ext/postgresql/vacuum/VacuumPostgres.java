@@ -22,6 +22,8 @@ public class VacuumPostgres extends AbstractSqlGenerator<VacuumStatement> {
 
   @Override
   public ValidationErrors validate(VacuumStatement vacuumStatement, Database database, SqlGeneratorChain sqlGeneratorChain) {
+    ValidationErrors validationErrors = new ValidationErrors();
+    validationErrors.checkRequiredField("tableName", vacuumStatement.getTableName());
     return new ValidationErrors();
   }
 

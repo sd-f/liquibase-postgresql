@@ -25,14 +25,18 @@ public class CreateSchemaGenerator extends AbstractSqlGenerator<CreateSchemaStat
 
   /**
    * creates statement for dropping role in postgres sql
+   * <br />
    * <p>
    * @param statement
    * @param database
    * @param chain
-   * @return <p>
-   * @see @ http://www.postgresql.org/docs/8.1/static/sql-createschema.html where option can be:
-   * <p>
+   * @return <br />
+   * @see @ http://www.postgresql.org/docs/9.0/static/sql-createschema.html where option can be:<br />
+   * <pre>
+   * {@code
    * CREATE SCHEMA schemaname [ AUTHORIZATION username ] [ schema_element [ ... ] ]
+   * }
+   * </pre>
    */
   @Override
   public Sql[] generateSql(CreateSchemaStatement statement, Database database, SqlGeneratorChain chain) {
