@@ -143,10 +143,29 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
     ValidationErrors errors = change.validate(new PostgresDatabase());
 
     // then
-    assertTrue("contains error targetRole", errors.getErrorMessages().contains("Attribute \"targetRole\" must be set"));
+    assertTrue("contains error targetRole", errors.getErrorMessages().contains("targetRole is required"));
     assertTrue("contains error cascade restrict excluding", errors.getErrorMessages().contains("Attributes \"restrict\" and \"cascade\" are excluding"));
-    assertTrue("contains error on objects mandatory", errors.getErrorMessages().contains("Attribute \"onObjects\" must be set"));
+    assertTrue("contains error on objects mandatory", errors.getErrorMessages().contains("onObjects is required"));
     assertTrue("contains error public is no group", errors.getErrorMessages().contains("PUBLIC and group can not be set together"));
+  }
+
+  @Test
+  public void validatePublicGroup() {
+    // given
+    AlterDefaultPrivilegesChange change = getNewGrantChange(true);
+    change.setTargetRole(null);
+    change.getRevoke().setCascade(true);
+    change.getRevoke().setRestrict(true);
+
+    change.getRevoke().setOnObjects(null);
+    change.getRevoke().setGroup(true);
+    change.getRevoke().setFromRole(null);
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error targetRole", errors.getErrorMessages().contains("toOrFromRole is required"));
   }
 
   @Test

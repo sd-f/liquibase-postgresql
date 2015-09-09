@@ -21,13 +21,7 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
     ValidationErrors validationErrors = new ValidationErrors();
 
     if (statement.getForType() != null) {
-      if (statement.getTargetRole() == null) {
-        validationErrors.addError("Attribute \"targetRole\" must be set");
-      } else {
-        if (statement.getTargetRole().isEmpty()) {
-          validationErrors.addError("Attribute \"targetRole\" must be set");
-        }
-      }
+      validationErrors.checkRequiredField("targetRole", statement.getTargetRole());
     }
 
     validateGenericAttributes(validationErrors, statement);
@@ -44,18 +38,15 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
 
   private void validateGenericAttributes(ValidationErrors validationErrors, AlterDefaultPrivilegesStatement statement) {
 
-    if (statement.getOnObjects() == null) {
-      validationErrors.addError("Attribute \"onObjects\" must be set");
-    }
+    validationErrors.checkRequiredField("onObjects", statement.getOnObjects());
 
     if (statement.getGroup() != null && statement.getGroup()
         && statement.getToOrFromRole() != null && "PUBLIC".equals(statement.getToOrFromRole())) {
       validationErrors.addError("PUBLIC and group can not be set together");
     }
 
-    if (statement.getToOrFromRole() == null || statement.getToOrFromRole().isEmpty()) {
-      validationErrors.addError("Attribute \"toRole\" or \"fromRole\" must be set");
-    }
+    validationErrors.checkRequiredField("toOrFromRole", statement.getToOrFromRole());
+
   }
 
   /**
@@ -148,11 +139,8 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
 
   private void addGrantOrRevokeOptions(AlterDefaultPrivilegesStatement statement, StringBuilder sql, Database database) {
 
-    if (statement.getOperations() != null) {
-      sql.append(statement.getOperations());
-    } else {
-      sql.append(Operations.ALL);
-    }
+    sql.append(statement.getOperations());
+
     sql.append(" ON ");
     sql.append(statement.getOnObjects());
 
