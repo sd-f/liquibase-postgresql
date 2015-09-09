@@ -29,12 +29,13 @@ public class VacuumPostgres extends AbstractSqlGenerator<VacuumStatement> {
 
   @Override
   public Sql[] generateSql(VacuumStatement vacuumStatement, Database database, SqlGeneratorChain sqlGeneratorChain) {
-    String sql = "VACUUM";
+
+    StringBuilder sql = new StringBuilder("VACUUM ");
     if (vacuumStatement.getTableName() != null) {
-      sql += " " + database.escapeTableName(vacuumStatement.getCatalogName(), vacuumStatement.getSchemaName(), vacuumStatement.getTableName());
+      sql.append(database.escapeTableName(vacuumStatement.getCatalogName(), vacuumStatement.getSchemaName(), vacuumStatement.getTableName()));
     }
     return new Sql[]{
-      new UnparsedSql(sql)
+      new UnparsedSql(sql.toString())
     };
   }
 

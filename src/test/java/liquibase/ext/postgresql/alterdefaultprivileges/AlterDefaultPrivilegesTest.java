@@ -21,6 +21,7 @@ import liquibase.ext.postgresql.grant.RevokeChange;
 import liquibase.sql.Sql;
 import liquibase.sqlgenerator.SqlGeneratorFactory;
 import liquibase.statement.SqlStatement;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -83,7 +84,35 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
   }
 
   @Test
-  public void generateStatementsRevoke() {
+  public void createInverseRevoke() {
+    // given
+    AlterDefaultPrivilegesChange change = getNewGrantChange(false);
+
+    // when
+    Change[] changes = change.createInverses();
+
+    // then
+    assertEquals(1, changes.length);
+    Assert.assertNotNull("reverse grant is created", ((AlterDefaultPrivilegesChange) changes[0]).getRevoke());
+    assertEquals(change.getGrant().getToRole(), ((AlterDefaultPrivilegesChange) changes[0]).getRevoke().getFromRole());
+  }
+
+  @Test
+  public void createInverseGrant() {
+    // given
+    AlterDefaultPrivilegesChange change = getNewGrantChange(true);
+
+    // when
+    Change[] changes = change.createInverses();
+
+    // then
+    assertEquals(1, changes.length);
+    Assert.assertNotNull("reverse grant is created", ((AlterDefaultPrivilegesChange) changes[0]).getGrant());
+    assertEquals(change.getRevoke().getFromRole(), ((AlterDefaultPrivilegesChange) changes[0]).getGrant().getToRole());
+  }
+
+  @Test
+  public void generateStatementsGrant() {
     // given
     AlterDefaultPrivilegesChange change = getNewGrantChange(true);
 

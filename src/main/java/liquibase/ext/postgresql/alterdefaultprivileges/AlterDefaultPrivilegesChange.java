@@ -45,6 +45,7 @@ public class AlterDefaultPrivilegesChange extends AbstractChange {
       inverseGrant.setGroup(getRevoke().getGroup());
       inverseGrant.setOnObjects(getRevoke().getOnObjects());
       inverseGrant.setOperations(getRevoke().getOperations());
+      inverse.setGrant(inverseGrant);
     }
 
     return new Change[]{inverse,};

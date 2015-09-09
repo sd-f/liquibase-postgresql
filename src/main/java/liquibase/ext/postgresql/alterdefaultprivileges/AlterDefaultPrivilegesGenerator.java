@@ -19,6 +19,19 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
   @Override
   public ValidationErrors validate(AlterDefaultPrivilegesStatement statement, Database database, SqlGeneratorChain chain) {
     ValidationErrors validationErrors = new ValidationErrors();
+
+    validateGenericAttributes(validationErrors, statement);
+
+    if (statement.getRevoke()
+        && statement.getCascade() != null && statement.getRestrict() != null
+        && statement.getCascade() && statement.getRestrict()) {
+      validationErrors.addError("Attributes \"restrict\" and \"cascade\" are excluding");
+
+    }
+    return validationErrors;
+  }
+
+  private void validateGenericAttributes(ValidationErrors validationErrors, AlterDefaultPrivilegesStatement statement) {
     if (statement.getForType() != null) {
       if (statement.getTargetRole() == null) {
         validationErrors.addError("Attribute \"targetRole\" must be set");
@@ -33,21 +46,13 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
     }
 
     if (statement.getGroup() != null && statement.getGroup()
-        && statement.getToOrFromRole() != null && statement.getToOrFromRole().equals("PUBLIC")) {
+        && statement.getToOrFromRole() != null && "PUBLIC".equals(statement.getToOrFromRole())) {
       validationErrors.addError("PUBLIC and group can not be set together");
     }
 
     if (statement.getToOrFromRole() == null || statement.getToOrFromRole().isEmpty()) {
       validationErrors.addError("Attribute \"toRole\" or \"fromRole\" must be set");
     }
-
-    if (statement.getRevoke()) {
-      if (statement.getCascade() != null && statement.getRestrict() != null
-          && statement.getCascade() && statement.getRestrict()) {
-        validationErrors.addError("Attributes \"restrict\" and \"cascade\" are excluding");
-      }
-    }
-    return validationErrors;
   }
 
   /**
@@ -126,17 +131,20 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
     }
 
     sql.append(" ");
-    addGrantOrRevoke(statement, sql, database);
 
-    return new Sql[]{new UnparsedSql(sql.toString())};
-  }
-
-  private void addGrantOrRevoke(AlterDefaultPrivilegesStatement statement, StringBuilder sql, Database database) {
     if (statement.getRevoke()) {
       sql.append("REVOKE ");
     } else {
       sql.append("GRANT ");
     }
+
+    addGrantOrRevokeOptions(statement, sql, database);
+
+    return new Sql[]{new UnparsedSql(sql.toString())};
+  }
+
+  private void addGrantOrRevokeOptions(AlterDefaultPrivilegesStatement statement, StringBuilder sql, Database database) {
+
     if (statement.getOperations() != null) {
       sql.append(statement.getOperations());
     } else {
