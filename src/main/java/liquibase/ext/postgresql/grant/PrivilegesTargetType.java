@@ -1,6 +1,6 @@
 /*
  */
-package liquibase.ext.postgresql.alterdefaultprivileges;
+package liquibase.ext.postgresql.grant;
 
 /**
  *

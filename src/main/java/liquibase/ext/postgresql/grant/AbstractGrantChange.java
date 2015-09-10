@@ -2,8 +2,6 @@
  */
 package liquibase.ext.postgresql.grant;
 
-import liquibase.ext.postgresql.alterdefaultprivileges.GrantObjects;
-import liquibase.ext.postgresql.alterdefaultprivileges.Operations;
 import liquibase.ext.postgresql.xml.Constants;
 import liquibase.serializer.AbstractLiquibaseSerializable;
 

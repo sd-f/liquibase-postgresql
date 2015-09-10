@@ -1,5 +1,8 @@
 package liquibase.ext.postgresql.alterdefaultprivileges;
 
+import liquibase.ext.postgresql.grant.Operations;
+import liquibase.ext.postgresql.grant.PrivilegesTargetType;
+import liquibase.ext.postgresql.grant.GrantObjects;
 import liquibase.statement.AbstractSqlStatement;
 
 public class AlterDefaultPrivilegesStatement extends AbstractSqlStatement {

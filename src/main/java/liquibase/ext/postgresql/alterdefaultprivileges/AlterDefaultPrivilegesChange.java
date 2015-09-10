@@ -1,5 +1,6 @@
 package liquibase.ext.postgresql.alterdefaultprivileges;
 
+import liquibase.ext.postgresql.grant.PrivilegesTargetType;
 import liquibase.change.AbstractChange;
 import liquibase.change.Change;
 import liquibase.change.ChangeMetaData;

@@ -1,5 +1,6 @@
 package liquibase.ext.postgresql.alterdefaultprivileges;
 
+import liquibase.ext.postgresql.grant.PrivilegesTargetType;
 import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.ValidationErrors;
