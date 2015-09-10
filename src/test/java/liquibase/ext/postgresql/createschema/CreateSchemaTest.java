@@ -5,22 +5,22 @@ package liquibase.ext.postgresql.createschema;
 import java.io.IOException;
 import java.util.List;
 
-import liquibase.Liquibase;
 import liquibase.change.Change;
 import liquibase.change.ChangeFactory;
 import liquibase.change.ChangeMetaData;
 import liquibase.changelog.ChangeSet;
-import liquibase.changelog.DatabaseChangeLog;
-import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.LiquibaseException;
+import liquibase.exception.ValidationErrors;
 import liquibase.ext.postgresql.BaseTestCase;
+import liquibase.ext.postgresql.dropschema.DropSchemaChange;
 import liquibase.sql.Sql;
-import liquibase.sqlgenerator.SqlGeneratorFactory;
 import liquibase.statement.SqlStatement;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -70,62 +70,92 @@ public class CreateSchemaTest extends BaseTestCase {
   }
 
   @Test
+  public void createInverse() {
+    // given
+    CreateSchemaChange change = new CreateSchemaChange();
+    change.setSchemaName("my_schema");
+
+    // when
+    Change[] changes = change.createInverses();
+
+    // then
+    assertEquals(1, changes.length);
+    Assert.assertNotNull("reverse role is created", ((DropSchemaChange) changes[0]));
+    assertEquals(change.getSchemaName(), ((DropSchemaChange) changes[0]).getSchemaName());
+  }
+
+  @Test
+  public void validateNulls() {
+    // given
+    CreateSchemaChange change = new CreateSchemaChange();
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error schemaName", errors.getErrorMessages().contains("schemaName is required for createSchema on postgresql"));
+  }
+
+  @Test
+  public void validateEmpty() {
+    // given
+    CreateSchemaChange change = new CreateSchemaChange();
+    change.setSchemaName("");
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error schemaName", errors.getErrorMessages().contains("schemaName must not be empty"));
+  }
+
+  @Test
   public void createSchemaFull() throws LiquibaseException, IOException {
     // given
-    Liquibase liquibase = this.newLiquibase("/createschema/changelog-full.test.xml");
-    Database database = liquibase.getDatabase();
-    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+    String changeLogFile = "/createschema/changelog-full.test.xml";
 
     // when
-    changeLog.validate(database);
-    List<ChangeSet> changeSets = changeLog.getChangeSets();
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 2);
 
     // then
-    assertEquals("One changeset given", 1, changeSets.size());
+    assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
 
-    ChangeSet changeSet = changeSets.get(0);
-
-    assertEquals("One change given", 1, changeSet.getChanges().size());
-
-    Change change = changeSet.getChanges().get(0);
+    Change change = changeSets.get(0).getChanges().get(0);
 
     // when
-    Sql[] sql = SqlGeneratorFactory.getInstance()
-        .generateSql(change.generateStatements(database)[0], database);
+    Sql[] sql = generateStatements(change);
 
+    // then
     assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "CREATE SCHEMA my_schema AUTHORIZATION test", sql[0].toSql());
+
+    change = changeSets.get(1).getChanges().get(0);
+
+    // when
+    sql = generateStatements(change);
 
     // then
-    assertEquals("Matching statement", "CREATE SCHEMA my_schema AUTHORIZATION test", sql[0].toSql());
+    assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "CREATE SCHEMA my_schema", sql[0].toSql());
   }
 
   @Test
   public void createSchemaSimple() throws LiquibaseException, IOException {
     // given
-    Liquibase liquibase = this.newLiquibase("/createschema/changelog.test.xml");
-    Database database = liquibase.getDatabase();
-    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+    String changeLogFile = "/createschema/changelog.test.xml";
 
     // when
-    changeLog.validate(database);
-    List<ChangeSet> changeSets = changeLog.getChangeSets();
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 1);
 
     // then
-    assertEquals("One changeset given", 1, changeSets.size());
-
-    ChangeSet changeSet = changeSets.get(0);
-
-    assertEquals("One change given", 1, changeSet.getChanges().size());
-
-    Change change = changeSet.getChanges().get(0);
+    assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
+    Change change = changeSets.get(0).getChanges().get(0);
 
     // when
-    Sql[] sql = SqlGeneratorFactory.getInstance()
-        .generateSql(change.generateStatements(database)[0], database);
+    Sql[] sql = generateStatements(change);
 
+    // then
     assertEquals("One statement generated", 1, sql.length);
-
-    // then
     assertEquals("Matching statement", "CREATE SCHEMA my_schema", sql[0].toSql());
 
   }

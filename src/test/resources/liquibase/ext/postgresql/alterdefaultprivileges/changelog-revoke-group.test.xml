@@ -7,8 +7,15 @@
                         https://softwaredesign.foundation/xsd/liquibase https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
     <changeSet id="test" author="Lucas Reeh">
-        <ext:alterDefaultPrivileges forRole="ROLE" inSchema="my_schema" targetRole="my_role">
-            <ext:revoke operation="ALL" onObjects="TABLES" fromRole="my_group" group="true" restrict="true" cascade="false"/>
+        <ext:alterDefaultPrivileges forPrivilegeType="ROLE"
+                                    inSchema="my_schema"
+                                    targetRole="my_role">
+            <ext:revoke operation="ALL"
+                        onObjects="TABLES"
+                        fromRole="my_group"
+                        group="true"
+                        restrict="true"
+                        cascade="false"/>
         </ext:alterDefaultPrivileges>
     </changeSet>
 

@@ -5,23 +5,20 @@ package liquibase.ext.postgresql.dropschema;
 import java.io.IOException;
 import java.util.List;
 
-import liquibase.Liquibase;
 import liquibase.change.Change;
 import liquibase.change.ChangeFactory;
 import liquibase.change.ChangeMetaData;
 import liquibase.changelog.ChangeSet;
-import liquibase.changelog.DatabaseChangeLog;
-import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.LiquibaseException;
+import liquibase.exception.ValidationErrors;
 import liquibase.ext.postgresql.BaseTestCase;
 import liquibase.sql.Sql;
-import liquibase.sqlgenerator.SqlGeneratorFactory;
 import liquibase.statement.SqlStatement;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -68,80 +65,176 @@ public class DropSchemaTest extends BaseTestCase {
   }
 
   @Test
+  public void validate() {
+    // given
+    DropSchemaChange change = new DropSchemaChange();
+    change.setSchemaName("my_schema");
+    change.setRestrict(true);
+    change.setCascade(true);
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error cascade restrict excluding", errors.getErrorMessages().contains("Attributes \"restrict\" and \"cascade\" are excluding"));
+  }
+
+  @Test
+  public void validateRestrict() {
+    // given
+    DropSchemaChange change = new DropSchemaChange();
+    change.setSchemaName("my_schema");
+    change.setRestrict(false);
+    change.setCascade(true);
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertEquals("contains no errors", 0, errors.getErrorMessages().size());
+  }
+
+  @Test
+  public void validateCascade() {
+    // given
+    DropSchemaChange change = new DropSchemaChange();
+    change.setSchemaName("my_schema");
+    change.setRestrict(true);
+    change.setCascade(false);
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertEquals("contains no errors", 0, errors.getErrorMessages().size());
+  }
+
+  @Test
+  public void validateMandatory() {
+    // given
+    DropSchemaChange change = new DropSchemaChange();
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error schemaName mandatory", errors.getErrorMessages().contains("schemaName is required for dropSchema on postgresql"));
+  }
+
+  @Test
+  public void validateEmpty() {
+    // given
+    DropSchemaChange change = new DropSchemaChange();
+    change.setSchemaName("");
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error schemaName mandatory", errors.getErrorMessages().contains("schemaName must not be empty"));
+  }
+
+  @Test
   public void generateStatement() throws LiquibaseException, IOException {
     // given
-    Liquibase liquibase = this.newLiquibase("/dropschema/changelog.test.xml");
-    Database database = liquibase.getDatabase();
-    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+    String changeLogFile = "/dropschema/changelog.test.xml";
 
     // when
-    changeLog.validate(database);
-    List<ChangeSet> changeSets = changeLog.getChangeSets();
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 1);
 
     // then
-    assertEquals("One changeset given", 1, changeSets.size());
-
-    ChangeSet changeSet = changeSets.get(0);
-
-    assertEquals("One change given", 1, changeSet.getChanges().size());
-
-    Change change = changeSet.getChanges().get(0);
+    assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
+    Change change = changeSets.get(0).getChanges().get(0);
 
     // when
-    Sql[] sql = SqlGeneratorFactory.getInstance()
-        .generateSql(change.generateStatements(database)[0], database);
+    Sql[] sql = generateStatements(change);
 
+    // then
     assertEquals("One statement generated", 1, sql.length);
-
-    // then
     assertEquals("Matching statement", "DROP SCHEMA my_schema", sql[0].toSql());
   }
 
   @Test
-  public void generateStatementFull() throws LiquibaseException, IOException {
+  public void generateStatementCascade() throws LiquibaseException, IOException {
     // given
-    Liquibase liquibase = this.newLiquibase("/dropschema/changelog-full.test.xml");
-    Database database = liquibase.getDatabase();
-    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+    String changeLogFile = "/dropschema/changelog-cascade.test.xml";
 
     // when
-    changeLog.validate(database);
-    List<ChangeSet> changeSets = changeLog.getChangeSets();
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 1);
 
     // then
-    assertEquals("Two changesets given", 2, changeSets.size());
     assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
-    Sql[] sql = SqlGeneratorFactory.getInstance()
-        .generateSql(changeSets.get(0).getChanges().get(0).generateStatements(database)[0], database);
+    Change change = changeSets.get(0).getChanges().get(0);
 
-    assertEquals("One statement generated", 1, sql.length);
-    assertEquals("Matching statement", "DROP SCHEMA my_schema RESTRICT", sql[0].toSql());
+    // when
+    Sql[] sql = generateStatements(change);
 
-    assertEquals("One change given", 1, changeSets.get(1).getChanges().size());
-    sql = SqlGeneratorFactory.getInstance()
-        .generateSql(changeSets.get(1).getChanges().get(0).generateStatements(database)[0], database);
-
+    // then
     assertEquals("One statement generated", 1, sql.length);
     assertEquals("Matching statement", "DROP SCHEMA my_schema CASCADE", sql[0].toSql());
   }
 
   @Test
-  public void generateStatementExcludingProperties() throws LiquibaseException, IOException {
+  public void generateStatementFull() throws LiquibaseException, IOException {
     // given
-    Liquibase liquibase = this.newLiquibase("/dropschema/changelog-excluding.test.xml");
-    Database database = liquibase.getDatabase();
-    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+    String changeLogFile = "/dropschema/changelog-full.test.xml";
 
     // when
-    try {
-      changeLog.validate(database);
-    } catch (LiquibaseException ex) {
-      // then
-      // expect exception
-      Assert.assertTrue("Validation error", ex.getMessage().contains("Attributes \"restrict\" and \"cascade\" are excluding"));
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 6);
 
-    }
+    // then
+    assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
+    Change change = changeSets.get(0).getChanges().get(0);
 
+    // when
+    Sql[] sql = generateStatements(change);
+
+    // then
+    assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "DROP SCHEMA my_schema RESTRICT", sql[0].toSql());
+
+    change = changeSets.get(1).getChanges().get(0);
+
+    // when
+    sql = generateStatements(change);
+
+    // then
+    assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "DROP SCHEMA my_schema CASCADE", sql[0].toSql());
+
+    change = changeSets.get(2).getChanges().get(0);
+
+    // when
+    sql = generateStatements(change);
+
+    // then
+    assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "DROP SCHEMA my_schema", sql[0].toSql());
+
+    change = changeSets.get(3).getChanges().get(0);
+
+    // when
+    sql = generateStatements(change);
+
+    // then
+    assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "DROP SCHEMA my_schema", sql[0].toSql());
+
+    change = changeSets.get(4).getChanges().get(0);
+
+    // when
+    sql = generateStatements(change);
+
+    // then
+    assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "DROP SCHEMA my_schema", sql[0].toSql());
+
+    change = changeSets.get(5).getChanges().get(0);
+
+    // when
+    sql = generateStatements(change);
+
+    // then
+    assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "DROP SCHEMA my_schema CASCADE", sql[0].toSql());
   }
 
 }

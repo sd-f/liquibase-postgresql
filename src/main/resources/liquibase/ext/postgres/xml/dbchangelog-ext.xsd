@@ -60,9 +60,7 @@
     <xs:element name="alterDefaultPrivileges">
         <xs:annotation>
             <xs:appinfo>
-                <xs:documentation>
-                    ALTER DEFAULT PRIVILEGES ... see http://www.postgresql.org/docs/9.0/static/sql-alterdefaultprivileges.html
-                </xs:documentation>
+                <xs:documentation>ALTER DEFAULT PRIVILEGES ... see http://www.postgresql.org/docs/9.0/static/sql-alterdefaultprivileges.html</xs:documentation>
             </xs:appinfo>
         </xs:annotation>
         <xs:complexType>
@@ -70,7 +68,7 @@
                 <xs:element name="grant" type="grantType"/>
                 <xs:element name="revoke" type="revokeType"/>
             </xs:choice>
-            <xs:attribute name="forType" type="privilegesForLookup">
+            <xs:attribute name="forPrivilegeType" type="privilegesForLookup">
                 <xs:annotation>
                     <xs:appinfo>
                         <xs:documentation>

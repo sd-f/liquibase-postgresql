@@ -5,22 +5,20 @@ package liquibase.ext.postgresql.droprole;
 import java.io.IOException;
 import java.util.List;
 
-import liquibase.Liquibase;
 import liquibase.change.Change;
 import liquibase.change.ChangeFactory;
 import liquibase.change.ChangeMetaData;
 import liquibase.changelog.ChangeSet;
-import liquibase.changelog.DatabaseChangeLog;
-import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.LiquibaseException;
+import liquibase.exception.ValidationErrors;
 import liquibase.ext.postgresql.BaseTestCase;
 import liquibase.sql.Sql;
-import liquibase.sqlgenerator.SqlGeneratorFactory;
 import liquibase.statement.SqlStatement;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -67,32 +65,47 @@ public class DropRoleTest extends BaseTestCase {
   }
 
   @Test
+  public void validateNulls() {
+    // given
+    DropRoleChange change = new DropRoleChange();
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error roleName", errors.getErrorMessages().contains("roleName is required for dropRole on postgresql"));
+  }
+
+  @Test
+  public void validateEmpty() {
+    // given
+    DropRoleChange change = new DropRoleChange();
+    change.setRoleName("");
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error roleName", errors.getErrorMessages().contains("roleName must not be empty"));
+  }
+
+  @Test
   public void changeset() throws LiquibaseException, IOException {
     // given
-    Liquibase liquibase = this.newLiquibase("/droprole/changelog.test.xml");
-    Database database = liquibase.getDatabase();
-    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+    String changeLogFile = "/droprole/changelog.test.xml";
 
     // when
-    changeLog.validate(database);
-    List<ChangeSet> changeSets = changeLog.getChangeSets();
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 1);
 
     // then
-    assertEquals("One changeset given", 1, changeSets.size());
-
-    ChangeSet changeSet = changeSets.get(0);
-
-    assertEquals("One change given", 1, changeSet.getChanges().size());
-
-    Change change = changeSet.getChanges().get(0);
+    assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
+    Change change = changeSets.get(0).getChanges().get(0);
 
     // when
-    Sql[] sql = SqlGeneratorFactory.getInstance()
-        .generateSql(change.generateStatements(database)[0], database);
+    Sql[] sql = generateStatements(change);
 
+    // then
     assertEquals("One statement generated", 1, sql.length);
-
-    // then
     assertEquals("Matching statement", "DROP ROLE my_role", sql[0].toSql());
   }
 

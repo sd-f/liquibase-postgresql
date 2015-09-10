@@ -11,4 +11,9 @@
         <ext:createSchema schemaName="my_schema" authorization="test"></ext:createSchema>
     </changeSet>
 
+    <changeSet id="test2"
+               author="Lucas Reeh">
+        <ext:createSchema schemaName="my_schema" authorization=""></ext:createSchema>
+    </changeSet>
+
 </databaseChangeLog>

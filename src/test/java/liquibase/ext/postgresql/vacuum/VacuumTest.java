@@ -3,17 +3,13 @@ package liquibase.ext.postgresql.vacuum;
 import java.io.IOException;
 import java.util.List;
 
-import liquibase.Liquibase;
 import liquibase.change.Change;
 import liquibase.change.ChangeFactory;
 import liquibase.changelog.ChangeSet;
-import liquibase.changelog.DatabaseChangeLog;
-import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.LiquibaseException;
 import liquibase.ext.postgresql.BaseTestCase;
 import liquibase.sql.Sql;
-import liquibase.sqlgenerator.SqlGeneratorFactory;
 import liquibase.statement.SqlStatement;
 import org.junit.Test;
 
@@ -51,33 +47,78 @@ public class VacuumTest extends BaseTestCase {
   }
 
   @Test
+  public void getConfirmationMessage() {
+    // given
+    VacuumChange change = new VacuumChange();
+
+    // when
+    String message = change.getConfirmationMessage();
+
+    // then
+    assertEquals("Database vacuumed", message);
+  }
+
+  @Test
   public void changeset() throws LiquibaseException, IOException {
     // given
-    Liquibase liquibase = this.newLiquibase("/vacuum/changelog-full.test.xml");
-    Database database = liquibase.getDatabase();
-    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+    String changeLogFile = "/vacuum/changelog-full.test.xml";
 
     // when
-    changeLog.validate(database);
-    List<ChangeSet> changeSets = changeLog.getChangeSets();
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 1);
 
     // then
-    assertEquals("One changeset given", 1, changeSets.size());
-
-    ChangeSet changeSet = changeSets.get(0);
-
-    assertEquals("One change given", 1, changeSet.getChanges().size());
-
-    Change change = changeSet.getChanges().get(0);
+    assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
+    Change change = changeSets.get(0).getChanges().get(0);
 
     // when
-    Sql[] sql = SqlGeneratorFactory.getInstance()
-        .generateSql(change.generateStatements(database)[0], database);
+    Sql[] sql = generateStatements(change);
 
+    // then
     assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "VACUUM my_schema.my_table", sql[0].toSql());
+
+  }
+
+  @Test
+  public void changesetNulls() throws LiquibaseException, IOException {
+    // given
+    String changeLogFile = "/vacuum/changelog-nulls.test.xml";
+
+    // when
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 1);
 
     // then
-    assertEquals("Matching statement", "VACUUM my_schema.my_table", sql[0].toSql());
+    assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
+    Change change = changeSets.get(0).getChanges().get(0);
+
+    // when
+    Sql[] sql = generateStatements(change);
+
+    // then
+    assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "VACUUM", sql[0].toSql());
+
+  }
+
+  @Test
+  public void changesetEmpty() throws LiquibaseException, IOException {
+    // given
+    String changeLogFile = "/vacuum/changelog-empty.test.xml";
+
+    // when
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 1);
+
+    // then
+    assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
+    Change change = changeSets.get(0).getChanges().get(0);
+
+    // when
+    Sql[] sql = generateStatements(change);
+
+    // then
+    assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "VACUUM", sql[0].toSql());
+
   }
 
 }

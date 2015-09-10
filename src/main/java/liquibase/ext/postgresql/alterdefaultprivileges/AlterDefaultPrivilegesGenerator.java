@@ -3,6 +3,7 @@ package liquibase.ext.postgresql.alterdefaultprivileges;
 import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.ValidationErrors;
+import liquibase.ext.postgresql.validation.AdvancedValidationErrors;
 import liquibase.sql.Sql;
 import liquibase.sql.UnparsedSql;
 import liquibase.sqlgenerator.SqlGeneratorChain;
@@ -18,10 +19,14 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
 
   @Override
   public ValidationErrors validate(AlterDefaultPrivilegesStatement statement, Database database, SqlGeneratorChain chain) {
-    ValidationErrors validationErrors = new ValidationErrors();
+    AdvancedValidationErrors validationErrors = new AdvancedValidationErrors();
 
     if (statement.getForType() != null) {
-      validationErrors.checkRequiredField("targetRole", statement.getTargetRole());
+      validationErrors.checkRequired("targetRole", statement.getTargetRole());
+    } else {
+      if (statement.getInSchema() != null) {
+        validationErrors.checkRequired("inSchema", statement.getInSchema());
+      }
     }
 
     validateGenericAttributes(validationErrors, statement);
@@ -36,17 +41,17 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
     return validationErrors;
   }
 
-  private void validateGenericAttributes(ValidationErrors validationErrors, AlterDefaultPrivilegesStatement statement) {
+  private void validateGenericAttributes(AdvancedValidationErrors validationErrors, AlterDefaultPrivilegesStatement statement) {
 
-    validationErrors.checkRequiredField("operation", statement.getOperation());
-    validationErrors.checkRequiredField("onObjects", statement.getOnObjects());
+    validationErrors.checkRequired("operation", statement.getOperation());
+    validationErrors.checkRequired("onObjects", statement.getOnObjects());
 
     if (statement.getGroup() != null && statement.getGroup()
         && statement.getToOrFromRole() != null && "PUBLIC".equals(statement.getToOrFromRole())) {
       validationErrors.addError("PUBLIC and group can not be set together");
     }
 
-    validationErrors.checkRequiredField("toOrFromRole", statement.getToOrFromRole());
+    validationErrors.checkRequired("toOrFromRole", statement.getToOrFromRole());
 
   }
 
@@ -108,9 +113,9 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
   ) {
     StringBuilder sql = new StringBuilder("ALTER DEFAULT PRIVILEGES ");
 
-    if (statement.getTargetRole() != null) {
+    if (statement.getForType() != null) {
       sql.append("FOR ");
-      if (statement.getForType() != null && statement.getForType().equals(PrivilegesTargetType.USER)) {
+      if (PrivilegesTargetType.USER.toString().equals(statement.getForType().toString())) {
         sql.append(PrivilegesTargetType.USER);
       } else {
         sql.append(PrivilegesTargetType.ROLE);
@@ -123,9 +128,8 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
     if (statement.getInSchema() != null && !statement.getInSchema().isEmpty()) {
       sql.append("IN SCHEMA ");
       sql.append(database.escapeObjectName(statement.getInSchema(), DatabaseObject.class));
+      sql.append(" ");
     }
-
-    sql.append(" ");
 
     if (statement.getRevoke()) {
       sql.append("REVOKE ");
@@ -151,16 +155,15 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
       sql.append(" TO ");
     }
 
-    if (statement.getGroup() != null && statement.getGroup()) {
+    if (statement.getGroup()) {
       sql.append("GROUP ");
     }
 
-    if (statement.getToOrFromRole() != null && !statement.getToOrFromRole().isEmpty()) {
-      sql.append(database.escapeObjectName(statement.getToOrFromRole(), DatabaseObject.class));
-    }
+    sql.append(database.escapeObjectName(statement.getToOrFromRole(), DatabaseObject.class));
+
     sql.append(" ");
 
-    if (statement.getWithGrantOption() != null && statement.getWithGrantOption() && !statement.getRevoke()) {
+    if (!statement.getRevoke() && statement.getWithGrantOption() != null && statement.getWithGrantOption()) {
       sql.append("WITH GRANT OPTION ");
     }
     addRestrictOrCascade(statement.getRestrict(), statement.getCascade(), sql);

@@ -3,6 +3,7 @@ package liquibase.ext.postgresql.createschema;
 import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.ValidationErrors;
+import liquibase.ext.postgresql.validation.AdvancedValidationErrors;
 import liquibase.sql.Sql;
 import liquibase.sql.UnparsedSql;
 import liquibase.sqlgenerator.SqlGeneratorChain;
@@ -18,13 +19,13 @@ public class CreateSchemaGenerator extends AbstractSqlGenerator<CreateSchemaStat
 
   @Override
   public ValidationErrors validate(CreateSchemaStatement statement, Database database, SqlGeneratorChain chain) {
-    ValidationErrors validationErrors = new ValidationErrors();
-    validationErrors.checkRequiredField("schemaName", statement.getSchemaName());
+    AdvancedValidationErrors validationErrors = new AdvancedValidationErrors();
+    validationErrors.checkRequired("schemaName", statement.getSchemaName());
     return validationErrors;
   }
 
   /**
-   * creates statement for dropping role in postgres sql
+   * creates statement for creating schema in postgres sql
    * <br />
    * <p>
    * @param statement
@@ -45,7 +46,7 @@ public class CreateSchemaGenerator extends AbstractSqlGenerator<CreateSchemaStat
     sql.append(database.escapeObjectName(statement.getSchemaName(), DatabaseObject.class));
     sql.append(" ");
 
-    if (statement.getAuthorization() != null) {
+    if (statement.getAuthorization() != null && !statement.getAuthorization().isEmpty()) {
       sql.append("AUTHORIZATION ");
       sql.append(database.escapeObjectName(statement.getAuthorization(), DatabaseObject.class));
       sql.append(" ");

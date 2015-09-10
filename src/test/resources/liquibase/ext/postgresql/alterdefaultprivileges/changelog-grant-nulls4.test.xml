@@ -7,13 +7,10 @@
                         https://softwaredesign.foundation/xsd/liquibase https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
     <changeSet id="test" author="Lucas Reeh">
-        <ext:alterDefaultPrivileges forPrivilegeType="USER"
-                                    targetRole="my_role">
+        <ext:alterDefaultPrivileges inSchema="my_schema"
+                                    forPrivilegeType="">
             <ext:grant operation="ALL"
-                       onObjects="TABLES"
-                       toRole="PUBLIC"
-                       group="false"
-                       withGrantOption="false"/>
+                       onObjects="TABLES"/>
         </ext:alterDefaultPrivileges>
     </changeSet>
 

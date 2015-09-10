@@ -2,11 +2,20 @@ package liquibase.ext.postgresql;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 import liquibase.Liquibase;
+import liquibase.change.Change;
+import liquibase.changelog.ChangeSet;
+import liquibase.changelog.DatabaseChangeLog;
+import liquibase.database.Database;
 import liquibase.database.OfflineConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.FileSystemResourceAccessor;
+import liquibase.sql.Sql;
+import liquibase.sqlgenerator.SqlGeneratorFactory;
+
+import static junit.framework.TestCase.assertEquals;
 
 /**
  *
@@ -16,6 +25,7 @@ public abstract class BaseTestCase {
 
   private static final String TEST_BASE_PATH = "/liquibase/ext/postgresql";
   private String basePath;
+  private Database database;
 
   public Liquibase newLiquibase(String changeLogFile) throws LiquibaseException, IOException {
     this.setBasePath(changeLogFile);
@@ -38,6 +48,33 @@ public abstract class BaseTestCase {
 
   public String getBasePath() {
     return basePath;
+  }
+
+  public Sql[] generateStatements(Change change) {
+    return SqlGeneratorFactory.getInstance()
+        .generateSql(change.generateStatements(database)[0], database);
+  }
+
+  public List<ChangeSet> generateChangeSets(String changelogFile, Integer expectedChangesets) throws LiquibaseException, IOException {
+    Liquibase liquibase = this.newLiquibase(changelogFile);
+    this.setDatabase(liquibase.getDatabase());
+
+    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+
+    changeLog.validate(database);
+
+    List<ChangeSet> changeSets = changeLog.getChangeSets();
+
+    assertEquals("One changesets given", expectedChangesets.intValue(), changeSets.size());
+    return changeSets;
+  }
+
+  public Database getDatabase() {
+    return database;
+  }
+
+  public void setDatabase(Database database) {
+    this.database = database;
   }
 
 }

@@ -7,37 +7,39 @@
                         https://softwaredesign.foundation/xsd/liquibase https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
     <changeSet id="test" author="Lucas Reeh">
-        <ext:alterDefaultPrivileges forPrivilegeType="ROLE"
+        <ext:alterDefaultPrivileges forPrivilegeType="USER"
                                     inSchema="my_schema"
                                     targetRole="my_role">
-            <ext:revoke operation="ALL"
+            <ext:grant operation="SELECT"
+                       onObjects="TABLES"
+                       toRole="my_other_role"
+                       cascade="false"
+                       withGrantOption="true"/>
+        </ext:alterDefaultPrivileges>
+    </changeSet>
+
+    <changeSet id="test1" author="Lucas Reeh">
+        <ext:alterDefaultPrivileges forPrivilegeType="USER"
+                                    inSchema="my_schema"
+                                    targetRole="my_role">
+            <ext:revoke operation="SELECT"
                         onObjects="TABLES"
-                        fromRole="PUBLIC"
+                        fromRole="my_other_role"
                         restrict="false"
-                        cascade="true"/>
+                        cascade="false"/>
         </ext:alterDefaultPrivileges>
     </changeSet>
 
     <changeSet id="test2" author="Lucas Reeh">
         <ext:alterDefaultPrivileges forPrivilegeType="ROLE"
-                                    inSchema="my_schema"
+                                    inSchema=""
                                     targetRole="my_role">
-            <ext:revoke operation="ALL"
+            <ext:revoke operation="SELECT"
                         onObjects="TABLES"
-                        fromRole="PUBLIC"
-                        restrict="false"/>
+                        fromRole="my_other_role"
+                        cascade="true"/>
         </ext:alterDefaultPrivileges>
     </changeSet>
-
-    <changeSet id="test3" author="Lucas Reeh">
-        <ext:alterDefaultPrivileges forPrivilegeType="ROLE"
-                                    inSchema="my_schema"
-                                    targetRole="my_role">
-            <ext:revoke operation="ALL"
-                        onObjects="TABLES"
-                        fromRole="PUBLIC"
-                        cascade="false"/>
-        </ext:alterDefaultPrivileges>
-    </changeSet>
+    
 
 </databaseChangeLog>

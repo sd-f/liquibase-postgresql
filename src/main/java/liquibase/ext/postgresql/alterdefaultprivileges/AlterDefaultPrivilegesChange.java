@@ -13,7 +13,7 @@ import liquibase.statement.SqlStatement;
 @DatabaseChange(name = "alterDefaultPrivileges", description = "Alter default privileges", priority = ChangeMetaData.PRIORITY_DEFAULT)
 public class AlterDefaultPrivilegesChange extends AbstractChange {
 
-  private PrivilegesTargetType forType;
+  private String forPrivilegeType;
   private String inSchema;
   private String targetRole;
   private GrantChange grant;
@@ -27,25 +27,25 @@ public class AlterDefaultPrivilegesChange extends AbstractChange {
   @Override
   protected Change[] createInverses() {
     AlterDefaultPrivilegesChange inverse = new AlterDefaultPrivilegesChange();
-    inverse.setForType(getForType());
+    inverse.setForPrivilegeType(getForPrivilegeType());
     inverse.setInSchema(getInSchema());
     inverse.setTargetRole(getTargetRole());
 
     // if original grant then use revoke
-    if (getGrant() != null) {
-      RevokeChange inverseRevoke = new RevokeChange();
-      inverseRevoke.setFromRole(getGrant().getToRole());
-      inverseRevoke.setGroup(getGrant().getGroup());
-      inverseRevoke.setOnObjects(getGrant().getOnObjects());
-      inverseRevoke.setOperation(getGrant().getOperation());
-      inverse.setRevoke(inverseRevoke);
-    } else if (getRevoke() != null) {
+    if (getRevoke() != null) {
       GrantChange inverseGrant = new GrantChange();
       inverseGrant.setToRole(getRevoke().getFromRole());
       inverseGrant.setGroup(getRevoke().getGroup());
       inverseGrant.setOnObjects(getRevoke().getOnObjects());
       inverseGrant.setOperation(getRevoke().getOperation());
       inverse.setGrant(inverseGrant);
+    } else {
+      RevokeChange inverseRevoke = new RevokeChange();
+      inverseRevoke.setFromRole(getGrant().getToRole());
+      inverseRevoke.setGroup(getGrant().getGroup());
+      inverseRevoke.setOnObjects(getGrant().getOnObjects());
+      inverseRevoke.setOperation(getGrant().getOperation());
+      inverse.setRevoke(inverseRevoke);
     }
 
     return new Change[]{inverse,};
@@ -55,7 +55,7 @@ public class AlterDefaultPrivilegesChange extends AbstractChange {
   public SqlStatement[] generateStatements(Database database) {
     AlterDefaultPrivilegesStatement statement = new AlterDefaultPrivilegesStatement();
 
-    statement.setForType(getForType());
+    setForTypeFromString(statement, getForPrivilegeType());
     statement.setInSchema(getInSchema());
     statement.setTargetRole(getTargetRole());
 
@@ -77,18 +77,28 @@ public class AlterDefaultPrivilegesChange extends AbstractChange {
     return new SqlStatement[]{statement};
   }
 
+  private void setForTypeFromString(AlterDefaultPrivilegesStatement statement, String forTypeString) {
+    if (forTypeString != null && !forTypeString.isEmpty()) {
+      if (PrivilegesTargetType.USER.toString().equals(forTypeString)) {
+        statement.setForType(PrivilegesTargetType.USER);
+      } else {
+        statement.setForType(PrivilegesTargetType.ROLE);
+      }
+    }
+  }
+
   private void setGrantOptions(AbstractGrantChange change, AlterDefaultPrivilegesStatement statement) {
     statement.setGroup(change.getGroup());
     statement.setOnObjects(change.getOnObjects());
     statement.setOperation(change.getOperation());
   }
 
-  public PrivilegesTargetType getForType() {
-    return forType;
+  public String getForPrivilegeType() {
+    return forPrivilegeType;
   }
 
-  public void setForType(PrivilegesTargetType forType) {
-    this.forType = forType;
+  public void setForPrivilegeType(String forPrivilegeType) {
+    this.forPrivilegeType = forPrivilegeType;
   }
 
   public String getInSchema() {

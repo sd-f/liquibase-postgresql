@@ -6,22 +6,22 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import liquibase.Liquibase;
 import liquibase.change.Change;
 import liquibase.change.ChangeFactory;
 import liquibase.change.ChangeMetaData;
 import liquibase.changelog.ChangeSet;
-import liquibase.changelog.DatabaseChangeLog;
-import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.LiquibaseException;
+import liquibase.exception.ValidationErrors;
 import liquibase.ext.postgresql.BaseTestCase;
+import liquibase.ext.postgresql.droprole.DropRoleChange;
 import liquibase.sql.Sql;
-import liquibase.sqlgenerator.SqlGeneratorFactory;
 import liquibase.statement.SqlStatement;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -90,62 +90,97 @@ public class CreateRoleTest extends BaseTestCase {
   }
 
   @Test
+  public void createInverse() {
+    // given
+    CreateRoleChange change = new CreateRoleChange();
+    change.setRoleName("my_role");
+
+    // when
+    Change[] changes = change.createInverses();
+
+    // then
+    assertEquals(1, changes.length);
+    Assert.assertNotNull("reverse role is created", ((DropRoleChange) changes[0]));
+    assertEquals(change.getRoleName(), ((DropRoleChange) changes[0]).getRoleName());
+  }
+
+  @Test
+  public void validateNulls() {
+    // given
+    CreateRoleChange change = new CreateRoleChange();
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error roleName", errors.getErrorMessages().contains("roleName is required for createRole on postgresql"));
+    assertTrue("contains error password", errors.getErrorMessages().contains("password is required for createRole on postgresql"));
+  }
+
+  @Test
+  public void validateEmpty() {
+    // given
+    CreateRoleChange change = new CreateRoleChange();
+    change.setRoleName("");
+    change.setPassword("");
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertTrue("contains error roleName", errors.getErrorMessages().contains("roleName must not be empty"));
+    assertTrue("contains error password", errors.getErrorMessages().contains("password must not be empty"));
+  }
+
+  @Test
   public void createSchemaFull() throws LiquibaseException, IOException {
     // given
-    Liquibase liquibase = this.newLiquibase("/createrole/changelog-full.test.xml");
-    Database database = liquibase.getDatabase();
-    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+    String changeLogFile = "/createrole/changelog-full.test.xml";
 
     // when
-    changeLog.validate(database);
-    List<ChangeSet> changeSets = changeLog.getChangeSets();
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 2);
 
     // then
-    assertEquals("One changeset given", 1, changeSets.size());
-
-    ChangeSet changeSet = changeSets.get(0);
-
-    assertEquals("One change given", 1, changeSet.getChanges().size());
-
-    Change change = changeSet.getChanges().get(0);
+    assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
+    Change change = changeSets.get(0).getChanges().get(0);
 
     // when
-    Sql[] sql = SqlGeneratorFactory.getInstance()
-        .generateSql(change.generateStatements(database)[0], database);
+    Sql[] sql = generateStatements(change);
 
+    // then
     assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "CREATE ROLE my_role SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN CONNECTION LIMIT 1 ENCRYPTED PASSWORD 'my_password' VALID UNTIL '2002-05-30 09:00:00.0'", sql[0].toSql());
 
     // then
-    assertEquals("Matching statement", "CREATE ROLE my_role SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN CONNECTION LIMIT 1 ENCRYPTED PASSWORD 'my_password' VALID UNTIL '2002-05-30 09:00:00.0'", sql[0].toSql());
+    assertEquals("One change given", 1, changeSets.get(1).getChanges().size());
+    change = changeSets.get(1).getChanges().get(0);
+
+    // when
+    sql = generateStatements(change);
+
+    // then
+    assertEquals("One statement generated", 1, sql.length);
+    assertEquals("Matching statement", "CREATE ROLE my_role NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN UNENCRYPTED PASSWORD 'my_password'", sql[0].toSql());
+
   }
 
   @Test
   public void createSchemaSimple() throws LiquibaseException, IOException {
     // given
-    Liquibase liquibase = this.newLiquibase("/createrole/changelog.test.xml");
-    Database database = liquibase.getDatabase();
-    DatabaseChangeLog changeLog = liquibase.getDatabaseChangeLog();
+    String changeLogFile = "/createrole/changelog.test.xml";
 
     // when
-    changeLog.validate(database);
-    List<ChangeSet> changeSets = changeLog.getChangeSets();
+    List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 1);
 
     // then
-    assertEquals("One changeset given", 1, changeSets.size());
-
-    ChangeSet changeSet = changeSets.get(0);
-
-    assertEquals("One change given", 1, changeSet.getChanges().size());
-
-    Change change = changeSet.getChanges().get(0);
+    assertEquals("One change given", 1, changeSets.get(0).getChanges().size());
+    Change change = changeSets.get(0).getChanges().get(0);
 
     // when
-    Sql[] sql = SqlGeneratorFactory.getInstance()
-        .generateSql(change.generateStatements(database)[0], database);
+    Sql[] sql = generateStatements(change);
 
+    // then
     assertEquals("One statement generated", 1, sql.length);
-
-    // then
     assertEquals("Matching statement", "CREATE ROLE my_role NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN PASSWORD 'my_password'", sql[0].toSql());
 
   }

@@ -3,6 +3,7 @@ package liquibase.ext.postgresql.droprole;
 import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.ValidationErrors;
+import liquibase.ext.postgresql.validation.AdvancedValidationErrors;
 import liquibase.sql.Sql;
 import liquibase.sql.UnparsedSql;
 import liquibase.sqlgenerator.SqlGeneratorChain;
@@ -18,8 +19,8 @@ public class DropRoleGenerator extends AbstractSqlGenerator<DropRoleStatement> {
 
   @Override
   public ValidationErrors validate(DropRoleStatement statement, Database database, SqlGeneratorChain chain) {
-    ValidationErrors validationErrors = new ValidationErrors();
-    validationErrors.checkRequiredField("roleName", statement.getRoleName());
+    AdvancedValidationErrors validationErrors = new AdvancedValidationErrors();
+    validationErrors.checkRequired("roleName", statement.getRoleName());
     return validationErrors;
   }
 

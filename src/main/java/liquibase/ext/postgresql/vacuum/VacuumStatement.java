@@ -4,18 +4,24 @@ import liquibase.statement.AbstractSqlStatement;
 
 public class VacuumStatement extends AbstractSqlStatement {
 
-  private final String tableName;
-  private final String schemaName;
+  private String tableName;
+  private String schemaName;
   private String catalogName;
-
-  public VacuumStatement(String catalogName, String schemaName, String tableName) {
-    this.catalogName = catalogName;
-    this.tableName = tableName;
-    this.schemaName = schemaName;
-  }
 
   public String getTableName() {
     return tableName;
+  }
+
+  public void setTableName(String tableName) {
+    this.tableName = tableName;
+  }
+
+  public String getSchemaName() {
+    return schemaName;
+  }
+
+  public void setSchemaName(String schemaName) {
+    this.schemaName = schemaName;
   }
 
   public String getCatalogName() {
@@ -24,10 +30,6 @@ public class VacuumStatement extends AbstractSqlStatement {
 
   public void setCatalogName(String catalogName) {
     this.catalogName = catalogName;
-  }
-
-  public String getSchemaName() {
-    return schemaName;
   }
 
 }

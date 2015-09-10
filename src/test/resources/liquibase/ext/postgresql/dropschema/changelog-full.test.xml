@@ -16,4 +16,24 @@
         <ext:dropSchema schemaName="my_schema" cascade="true"></ext:dropSchema>
     </changeSet>
 
+    <changeSet id="test3"
+               author="Lucas Reeh">
+        <ext:dropSchema schemaName="my_schema" restrict="false"></ext:dropSchema>
+    </changeSet>
+
+    <changeSet id="test4"
+               author="Lucas Reeh">
+        <ext:dropSchema schemaName="my_schema" cascade="false"></ext:dropSchema>
+    </changeSet>
+
+    <changeSet id="test5"
+               author="Lucas Reeh">
+        <ext:dropSchema schemaName="my_schema"></ext:dropSchema>
+    </changeSet>
+
+    <changeSet id="test6"
+               author="Lucas Reeh">
+        <ext:dropSchema schemaName="my_schema" cascade="true"></ext:dropSchema>
+    </changeSet>
+
 </databaseChangeLog>

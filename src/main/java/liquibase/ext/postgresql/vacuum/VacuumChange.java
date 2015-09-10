@@ -43,9 +43,11 @@ public class VacuumChange extends AbstractChange {
 
   @Override
   public SqlStatement[] generateStatements(Database database) {
-    return new SqlStatement[]{
-      new VacuumStatement(catalogName, schemaName, tableName)
-    };
+    VacuumStatement statement = new VacuumStatement();
+    statement.setCatalogName(getCatalogName());
+    statement.setSchemaName(getSchemaName());
+    statement.setTableName(getTableName());
+    return new SqlStatement[]{statement};
   }
 
 }
