@@ -179,7 +179,7 @@
 
     </build>
 
-    <distributionManagement>
+    <!--    <distributionManagement>
         <repository>
             <id>sonatype-nexus-staging</id>
             <name>Nexus Release Repository</name>
@@ -189,6 +189,21 @@
             <id>sonatype-nexus-snapshots</id>
             <name>Sonatype Nexus Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>-->
+
+    <distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>sd.f-releases</id>
+            <name>softwaredesign.foundation Releases</name>
+            <url>https://softwaredesign.foundation/nexus/content/repositories/sd.f-releases</url>
+        </repository>
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>sd.f-snapshots</id>
+            <name>softwaredesign.foundation Snapshots</name>
+            <url>https://softwaredesign.foundation/nexus/content/repositories/sd.f-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
