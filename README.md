@@ -13,12 +13,12 @@ https://softwaredesign.foundation/jira/projects/LPMP
         <repository>
             <id>sd.f-releases</id>
             <name>softwaredesign.foundation Releases</name>
-            <url>${comuni.nexus.repo.url}/sd.f-releases</url>
+            <url>https://softwaredesign.foundation/nexus/content/repositories/sd.f-releases</url>
         </repository>
         <repository>
             <id>sd.f-snapshots</id>
             <name>softwaredesign.foundation Snapshots</name>
-            <url>${comuni.nexus.repo.url}/sd.f-snapshots</url>
+            <url>https://softwaredesign.foundation/nexus/content/repositories/sd.f-snapshots</url>
 			<snapshots>
                 <enabled>true</enabled>
             </snapshots>
