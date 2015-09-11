@@ -1,6 +1,6 @@
 /*
  */
-package liquibase.ext.postgresql.alterrole;
+package liquibase.ext.postgresql.alterschema;
 
 import liquibase.ext.postgresql.xml.Constants;
 import liquibase.serializer.AbstractLiquibaseSerializable;
@@ -9,7 +9,7 @@ import liquibase.serializer.AbstractLiquibaseSerializable;
  *
  * @author Lucas Reeh <lreeh@tugraz.at>
  */
-public class AlterRoleOwnerToElement extends AbstractLiquibaseSerializable {
+public class AlterSchemaOwnerToElement extends AbstractLiquibaseSerializable {
 
   private String owner;
 

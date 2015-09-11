@@ -1,4 +1,4 @@
-package liquibase.ext.postgresql.alterrole;
+package liquibase.ext.postgresql.alterschema;
 
 import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
@@ -10,17 +10,17 @@ import liquibase.sqlgenerator.SqlGeneratorChain;
 import liquibase.sqlgenerator.core.AbstractSqlGenerator;
 import liquibase.structure.DatabaseObject;
 
-public class AlterRoleGenerator extends AbstractSqlGenerator<AlterRoleStatement> {
+public class AlterSchemaGenerator extends AbstractSqlGenerator<AlterSchemaStatement> {
 
   @Override
-  public boolean supports(AlterRoleStatement statement, Database database) {
+  public boolean supports(AlterSchemaStatement statement, Database database) {
     return database instanceof PostgresDatabase;
   }
 
   @Override
-  public ValidationErrors validate(AlterRoleStatement statement, Database database, SqlGeneratorChain chain) {
+  public ValidationErrors validate(AlterSchemaStatement statement, Database database, SqlGeneratorChain chain) {
     AdvancedValidationErrors validationErrors = new AdvancedValidationErrors();
-    validationErrors.checkRequired("roleName", statement.getRoleName());
+    validationErrors.checkRequired("schemaName", statement.getSchemaName());
 
     Boolean owner = false;
     Boolean rename = false;
@@ -61,10 +61,10 @@ public class AlterRoleGenerator extends AbstractSqlGenerator<AlterRoleStatement>
    * </pre>
    */
   @Override
-  public Sql[] generateSql(AlterRoleStatement statement, Database database, SqlGeneratorChain chain) {
-    StringBuilder sql = new StringBuilder("ALTER ROLE ");
+  public Sql[] generateSql(AlterSchemaStatement statement, Database database, SqlGeneratorChain chain) {
+    StringBuilder sql = new StringBuilder("ALTER SCHEMA ");
 
-    sql.append(database.escapeObjectName(statement.getRoleName(), DatabaseObject.class));
+    sql.append(database.escapeObjectName(statement.getSchemaName(), DatabaseObject.class));
     sql.append(" ");
 
     if (statement.getOwnerTo() != null) {

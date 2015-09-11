@@ -1,6 +1,6 @@
 /*
  */
-package liquibase.ext.postgresql.alterrole;
+package liquibase.ext.postgresql.alterschema;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,14 +26,14 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Lucas Reeh <lreeh@tugraz.at>
  */
-public class AlterRoleTest extends BaseTestCase {
+public class AlterSchemaTest extends BaseTestCase {
 
   @Test
   public void generateStatementsOwnerTo() {
     // given
-    AlterRoleChange change = new AlterRoleChange();
-    change.setRoleName("my_role");
-    AlterRoleOwnerToElement ownerTo = new AlterRoleOwnerToElement();
+    AlterSchemaChange change = new AlterSchemaChange();
+    change.setSchemaName("my_schema");
+    AlterSchemaOwnerToElement ownerTo = new AlterSchemaOwnerToElement();
     ownerTo.setOwner("my_owner");
     change.setOwnerTo(ownerTo);
 
@@ -42,17 +42,17 @@ public class AlterRoleTest extends BaseTestCase {
 
     // then
     assertEquals(1, sqlStatements.length);
-    assertEquals("my_role", ((AlterRoleStatement) sqlStatements[0]).getRoleName());
-    assertEquals("my_owner", ((AlterRoleStatement) sqlStatements[0]).getOwnerTo());
+    assertEquals("my_schema", ((AlterSchemaStatement) sqlStatements[0]).getSchemaName());
+    assertEquals("my_owner", ((AlterSchemaStatement) sqlStatements[0]).getOwnerTo());
   }
 
   @Test
   public void generateStatementsRenameTo() {
     // given
-    AlterRoleChange change = new AlterRoleChange();
-    change.setRoleName("my_role");
-    AlterRoleRenameToElement renameTo = new AlterRoleRenameToElement();
-    renameTo.setRole("my_new_role");
+    AlterSchemaChange change = new AlterSchemaChange();
+    change.setSchemaName("my_schema");
+    AlterSchemaRenameToElement renameTo = new AlterSchemaRenameToElement();
+    renameTo.setSchema("my_new_schema");
     change.setRenameTo(renameTo);
 
     // when
@@ -60,67 +60,67 @@ public class AlterRoleTest extends BaseTestCase {
 
     // then
     assertEquals(1, sqlStatements.length);
-    assertEquals("my_role", ((AlterRoleStatement) sqlStatements[0]).getRoleName());
-    assertEquals("my_new_role", ((AlterRoleStatement) sqlStatements[0]).getRenameTo());
+    assertEquals("my_schema", ((AlterSchemaStatement) sqlStatements[0]).getSchemaName());
+    assertEquals("my_new_schema", ((AlterSchemaStatement) sqlStatements[0]).getRenameTo());
   }
 
   @Test
   public void getConfirmationMessage() {
     // given
-    AlterRoleChange change = new AlterRoleChange();
-    change.setRoleName("my_role");
+    AlterSchemaChange change = new AlterSchemaChange();
+    change.setSchemaName("my_schema");
 
     // when
     String message = change.getConfirmationMessage();
 
     // then
-    assertEquals("Role " + change.getRoleName() + " altered", message);
+    assertEquals("Schema " + change.getSchemaName() + " altered", message);
   }
 
   @Test
   public void getChangeMetaData() {
     // given
-    AlterRoleChange change = new AlterRoleChange();
+    AlterSchemaChange change = new AlterSchemaChange();
 
     // when then
-    assertEquals("alterRole", ChangeFactory.getInstance().getChangeMetaData(change).getName());
-    assertEquals("Alter role", ChangeFactory.getInstance().getChangeMetaData(change).getDescription());
+    assertEquals("alterSchema", ChangeFactory.getInstance().getChangeMetaData(change).getName());
+    assertEquals("Alter schema", ChangeFactory.getInstance().getChangeMetaData(change).getDescription());
     assertEquals(ChangeMetaData.PRIORITY_DEFAULT, ChangeFactory.getInstance().getChangeMetaData(change).getPriority());
   }
 
   @Test
   public void validateNulls() {
     // given
-    AlterRoleChange change = new AlterRoleChange();
-    change.setRoleName(null);
+    AlterSchemaChange change = new AlterSchemaChange();
+    change.setSchemaName(null);
 
     // when
     ValidationErrors errors = change.validate(new PostgresDatabase());
 
     // then
-    assertTrue("contains error roleName", errors.getErrorMessages().contains("roleName is required for alterRole on postgresql"));
+    assertTrue("contains error schemaName", errors.getErrorMessages().contains("schemaName is required for alterSchema on postgresql"));
   }
 
   @Test
   public void valideEmpty() {
     // given
-    AlterRoleChange change = new AlterRoleChange();
-    change.setRoleName("");
+    AlterSchemaChange change = new AlterSchemaChange();
+    change.setSchemaName("");
 
     // when
     ValidationErrors errors = change.validate(new PostgresDatabase());
 
     // then
-    assertTrue("contains error roleName", errors.getErrorMessages().contains("roleName must not be empty"));
+    assertTrue("contains error schemaName", errors.getErrorMessages().contains("schemaName must not be empty"));
   }
 
   @Test
   public void valideEmptyRenameTo() {
     // given
-    AlterRoleChange change = new AlterRoleChange();
-    change.setRoleName("my_role");
-    AlterRoleRenameToElement renameTo = new AlterRoleRenameToElement();
-    renameTo.setRole("");
+    AlterSchemaChange change = new AlterSchemaChange();
+    change.setSchemaName("my_schema");
+    AlterSchemaRenameToElement renameTo = new AlterSchemaRenameToElement();
+    renameTo.setSchema("");
     change.setRenameTo(renameTo);
 
     // when
@@ -133,9 +133,9 @@ public class AlterRoleTest extends BaseTestCase {
   @Test
   public void valideEmptyOwnerTo() {
     // given
-    AlterRoleChange change = new AlterRoleChange();
-    change.setRoleName("my_role");
-    AlterRoleOwnerToElement ownerTo = new AlterRoleOwnerToElement();
+    AlterSchemaChange change = new AlterSchemaChange();
+    change.setSchemaName("my_schema");
+    AlterSchemaOwnerToElement ownerTo = new AlterSchemaOwnerToElement();
     ownerTo.setOwner("");
     change.setOwnerTo(ownerTo);
 
@@ -149,8 +149,8 @@ public class AlterRoleTest extends BaseTestCase {
   @Test
   public void valideRequired() {
     // given
-    AlterRoleChange change = new AlterRoleChange();
-    change.setRoleName("my_role");
+    AlterSchemaChange change = new AlterSchemaChange();
+    change.setSchemaName("my_schema");
 
     // when
     ValidationErrors errors = change.validate(new PostgresDatabase());
@@ -162,12 +162,12 @@ public class AlterRoleTest extends BaseTestCase {
   @Test
   public void valideExcluding() {
     // given
-    AlterRoleChange change = new AlterRoleChange();
-    change.setRoleName("my_role");
-    AlterRoleRenameToElement renameTo = new AlterRoleRenameToElement();
-    renameTo.setRole("my_new_role");
+    AlterSchemaChange change = new AlterSchemaChange();
+    change.setSchemaName("my_schema");
+    AlterSchemaRenameToElement renameTo = new AlterSchemaRenameToElement();
+    renameTo.setSchema("my_new_schema");
     change.setRenameTo(renameTo);
-    AlterRoleOwnerToElement ownerTo = new AlterRoleOwnerToElement();
+    AlterSchemaOwnerToElement ownerTo = new AlterSchemaOwnerToElement();
     ownerTo.setOwner("my_owner");
     change.setOwnerTo(ownerTo);
 
@@ -185,7 +185,7 @@ public class AlterRoleTest extends BaseTestCase {
   @Test
   public void changesets() throws LiquibaseException, IOException {
     // given
-    String changeLogFile = "/alterrole/changelog.test.xml";
+    String changeLogFile = "/alterschema/changelog.test.xml";
 
     // when
     List<ChangeSet> changeSets = generateChangeSets(changeLogFile, 2);
@@ -199,7 +199,7 @@ public class AlterRoleTest extends BaseTestCase {
 
     // then
     assertEquals("One statement generated", 1, sql.length);
-    assertEquals("Matching statement", "ALTER ROLE my_role RENAME TO my_new_role", sql[0].toSql());
+    assertEquals("Matching statement", "ALTER SCHEMA my_schema RENAME TO my_new_schema", sql[0].toSql());
 
     // then
     assertEquals("One change given", 1, changeSets.get(1).getChanges().size());
@@ -210,14 +210,14 @@ public class AlterRoleTest extends BaseTestCase {
 
     // then
     assertEquals("One statement generated", 1, sql.length);
-    assertEquals("Matching statement", "ALTER ROLE my_role OWNER TO my_owner", sql[0].toSql());
+    assertEquals("Matching statement", "ALTER SCHEMA my_schema OWNER TO my_owner", sql[0].toSql());
 
   }
 
   @Test
   public void changesetsEmpty() throws LiquibaseException, IOException {
     // given
-    String changeLogFile = "/alterrole/changelog-empty.test1.xml";
+    String changeLogFile = "/alterschema/changelog-empty.test1.xml";
 
     // when
     try {

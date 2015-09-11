@@ -8,10 +8,10 @@
 
     <changeSet id="test"
                author="Lucas Reeh">
-        <ext:alterRole roleName="my_role">
-            <ext:renameTo role="my_new_role"></ext:renameTo>
+        <ext:alterSchema schemaName="my_schema">
+            <ext:renameTo schema="my_new_schema"></ext:renameTo>
             <ext:ownerTo owner=""></ext:ownerTo>
-        </ext:alterRole>
+        </ext:alterSchema>
     </changeSet>
 
 </databaseChangeLog>

@@ -1,19 +1,19 @@
-package liquibase.ext.postgresql.alterrole;
+package liquibase.ext.postgresql.alterschema;
 
 import liquibase.statement.AbstractSqlStatement;
 
-public class AlterRoleStatement extends AbstractSqlStatement {
+public class AlterSchemaStatement extends AbstractSqlStatement {
 
-  private String roleName;
+  private String schemaName;
   private String renameTo;
   private String ownerTo;
 
-  public String getRoleName() {
-    return roleName;
+  public String getSchemaName() {
+    return schemaName;
   }
 
-  public void setRoleName(String roleName) {
-    this.roleName = roleName;
+  public void setSchemaName(String schemaName) {
+    this.schemaName = schemaName;
   }
 
   public String getRenameTo() {

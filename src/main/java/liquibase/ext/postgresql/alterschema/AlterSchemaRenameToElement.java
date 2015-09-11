@@ -1,6 +1,6 @@
 /*
  */
-package liquibase.ext.postgresql.alterrole;
+package liquibase.ext.postgresql.alterschema;
 
 import liquibase.ext.postgresql.xml.Constants;
 import liquibase.serializer.AbstractLiquibaseSerializable;
@@ -9,9 +9,9 @@ import liquibase.serializer.AbstractLiquibaseSerializable;
  *
  * @author Lucas Reeh <lreeh@tugraz.at>
  */
-public class AlterRoleRenameToElement extends AbstractLiquibaseSerializable {
+public class AlterSchemaRenameToElement extends AbstractLiquibaseSerializable {
 
-  private String role;
+  private String schema;
 
   @Override
   public String getSerializedObjectNamespace() {
@@ -23,12 +23,12 @@ public class AlterRoleRenameToElement extends AbstractLiquibaseSerializable {
     return "renameTo";
   }
 
-  public String getRole() {
-    return role;
+  public String getSchema() {
+    return schema;
   }
 
-  public void setRole(String role) {
-    this.role = role;
+  public void setSchema(String schema) {
+    this.schema = schema;
   }
 
 }
