@@ -38,6 +38,24 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="alterRole">
+        <xs:complexType>
+            <xs:attribute name="roleName" type="xs:string" use="required"/>
+            <xs:choice maxOccurs="1" minOccurs="1">
+                <xs:element name="renameTo" type="alterRoleRenameToType"/>
+                <xs:element name="ownerTo" type="alterRoleOwnerToType"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="alterRoleRenameToType">
+        <xs:attribute name="role" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="alterRoleOwnerToType">
+        <xs:attribute name="owner" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
     <!-- schema -->
 
     <xs:element name="createSchema">

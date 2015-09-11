@@ -35,7 +35,7 @@ public class DropSchemaGenerator extends AbstractSqlGenerator<DropSchemaStatemen
    * @param database
    * @param chain
    * @return <p>
-   * @see @ http://www.postgresql.org/docs/8.1/static/sql-dropschema.html where option can be:<br />
+   * @see @ http://www.postgresql.org/docs/9.4/static/sql-dropschema.html where option can be:<br />
    * <pre>
    * {@code
    * DROP SCHEMA name [, ...] [ CASCADE | RESTRICT ]

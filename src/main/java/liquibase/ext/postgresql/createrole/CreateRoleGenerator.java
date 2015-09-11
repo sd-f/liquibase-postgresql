@@ -32,7 +32,7 @@ public class CreateRoleGenerator extends AbstractSqlGenerator<CreateRoleStatemen
    * @param database
    * @param chain
    * @return <br />
-   * @see @ http://www.postgresql.org/docs/9.0/static/sql-createrole.html where option can be:<br />
+   * @see @ http://www.postgresql.org/docs/9.4/static/sql-createrole.html where option can be:<br />
    * <pre>
    * {@code
    * CREATE ROLE name [ [ WITH ] option [ ... ] ]

@@ -133,7 +133,7 @@ public class CreateRoleTest extends BaseTestCase {
   }
 
   @Test
-  public void createSchemaFull() throws LiquibaseException, IOException {
+  public void changesetFull() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/createrole/changelog-full.test.xml";
 
@@ -165,7 +165,7 @@ public class CreateRoleTest extends BaseTestCase {
   }
 
   @Test
-  public void createSchemaSimple() throws LiquibaseException, IOException {
+  public void changesetSimple() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/createrole/changelog.test.xml";
 

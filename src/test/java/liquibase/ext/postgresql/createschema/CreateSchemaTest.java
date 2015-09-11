@@ -110,7 +110,7 @@ public class CreateSchemaTest extends BaseTestCase {
   }
 
   @Test
-  public void createSchemaFull() throws LiquibaseException, IOException {
+  public void changesetFull() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/createschema/changelog-full.test.xml";
 
@@ -140,7 +140,7 @@ public class CreateSchemaTest extends BaseTestCase {
   }
 
   @Test
-  public void createSchemaSimple() throws LiquibaseException, IOException {
+  public void changesetSimple() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/createschema/changelog.test.xml";
 

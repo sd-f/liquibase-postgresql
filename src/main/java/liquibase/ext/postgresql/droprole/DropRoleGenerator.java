@@ -31,7 +31,7 @@ public class DropRoleGenerator extends AbstractSqlGenerator<DropRoleStatement> {
    * @param database
    * @param chain
    * @return <p>
-   * @see @ http://www.postgresql.org/docs/9.0/static/sql-droprole.html where option can be:<br />
+   * @see @ http://www.postgresql.org/docs/9.4/static/sql-droprole.html where option can be:<br />
    * <pre>
    * {@code
    * DROP ROLE name [, ...]

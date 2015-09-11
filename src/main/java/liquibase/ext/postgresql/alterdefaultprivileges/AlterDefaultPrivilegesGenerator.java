@@ -1,9 +1,9 @@
 package liquibase.ext.postgresql.alterdefaultprivileges;
 
-import liquibase.ext.postgresql.grant.PrivilegesTargetType;
 import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.ValidationErrors;
+import liquibase.ext.postgresql.grant.PrivilegesTargetType;
 import liquibase.ext.postgresql.validation.AdvancedValidationErrors;
 import liquibase.sql.Sql;
 import liquibase.sql.UnparsedSql;
@@ -63,7 +63,7 @@ public class AlterDefaultPrivilegesGenerator extends AbstractSqlGenerator<AlterD
    * @param database
    * @param chain
    * @return <p>
-   * @see @ http://www.postgresql.org/docs/8.1/static/sql-createrole.html where option can be:<br />
+   * @see http://www.postgresql.org/docs/9.4/static/sql-alterdefaultprivileges.html where option can be:<br />
    * <pre>
    * {@code
    * ALTER DEFAULT PRIVILEGES

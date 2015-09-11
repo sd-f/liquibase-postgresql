@@ -2,10 +2,6 @@
  */
 package liquibase.ext.postgresql.alterdefaultprivileges;
 
-import liquibase.ext.postgresql.grant.PrivilegesTargetType;
-import liquibase.ext.postgresql.grant.GrantObjects;
-import liquibase.ext.postgresql.grant.Operations;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -20,6 +16,9 @@ import liquibase.exception.ValidationFailedException;
 import liquibase.ext.postgresql.BaseTestCase;
 import liquibase.ext.postgresql.grant.AbstractGrantChange;
 import liquibase.ext.postgresql.grant.GrantChange;
+import liquibase.ext.postgresql.grant.GrantObjects;
+import liquibase.ext.postgresql.grant.Operations;
+import liquibase.ext.postgresql.grant.PrivilegesTargetType;
 import liquibase.ext.postgresql.grant.RevokeChange;
 import liquibase.ext.postgresql.xml.Constants;
 import liquibase.sql.Sql;
@@ -313,7 +312,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
   }
 
   @Test
-  public void alterDefaultPrivilegesGrant() throws LiquibaseException, IOException {
+  public void changesetGrant() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/alterdefaultprivileges/changelog-grant.test.xml";
 
@@ -334,7 +333,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
   }
 
   @Test
-  public void alterDefaultPrivilegesRevoke() throws LiquibaseException, IOException {
+  public void changesetRevoke() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/alterdefaultprivileges/changelog-revoke.test.xml";
 
@@ -377,7 +376,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
   }
 
   @Test
-  public void alterDefaultPrivilegesRevokeGroupRestrict() throws LiquibaseException, IOException {
+  public void changesetRevokeGroupRestrict() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/alterdefaultprivileges/changelog-revoke-group.test.xml";
 
@@ -398,7 +397,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
   }
 
   @Test
-  public void alterDefaultPrivilegesGrantNulls() throws LiquibaseException, IOException {
+  public void changesetGrantNulls() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/alterdefaultprivileges/changelog-grant-nulls1.test.xml";
 
@@ -413,7 +412,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
   }
 
   @Test
-  public void alterDefaultPrivilegesGrantNulls2() throws LiquibaseException, IOException {
+  public void changesetGrantNulls2() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/alterdefaultprivileges/changelog-grant-nulls2.test.xml";
 
@@ -432,7 +431,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
   }
 
   @Test
-  public void alterDefaultPrivilegesGrantNulls3() throws LiquibaseException, IOException {
+  public void changesetGrantNulls3() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/alterdefaultprivileges/changelog-grant-nulls3.test.xml";
 
@@ -447,7 +446,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
   }
 
   @Test
-  public void alterDefaultPrivilegesGrantNulls4() throws LiquibaseException, IOException {
+  public void changesetGrantNulls4() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/alterdefaultprivileges/changelog-grant-nulls4.test.xml";
 
@@ -462,7 +461,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
   }
 
   @Test
-  public void alterDefaultPrivilegesGrantNulls5() throws LiquibaseException, IOException {
+  public void changesetGrantNulls5() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/alterdefaultprivileges/changelog-grant-nulls5.test.xml";
 
@@ -477,7 +476,7 @@ public class AlterDefaultPrivilegesTest extends BaseTestCase {
   }
 
   @Test
-  public void alterDefaultPrivilegesFull() throws LiquibaseException, IOException {
+  public void changesetFull() throws LiquibaseException, IOException {
     // given
     String changeLogFile = "/alterdefaultprivileges/changelog-full.test.xml";
 
