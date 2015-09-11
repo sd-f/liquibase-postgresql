@@ -7,7 +7,25 @@ https://softwaredesign.foundation/jira/projects/LPMP
 ## Maven
 
 ```xml
-    <!-- ... -->
+
+	<!-- snapshot repo -->
+	<repositories>
+        <repository>
+            <id>sd.f-releases</id>
+            <name>softwaredesign.foundation Releases</name>
+            <url>${comuni.nexus.repo.url}/sd.f-releases</url>
+        </repository>
+        <repository>
+            <id>sd.f-snapshots</id>
+            <name>softwaredesign.foundation Snapshots</name>
+            <url>${comuni.nexus.repo.url}/sd.f-snapshots</url>
+			<snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <!-- dependencies needed -->
 	<dependencies>
         <dependency>
             <groupId>postgresql</groupId>
