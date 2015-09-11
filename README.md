@@ -89,15 +89,9 @@ https://softwaredesign.foundation/jira/projects/LPMP
         <ext:createSchema schemaName="my_schema"></ext:createSchema>
     </changeSet>
 	
-	<changeSet id="test3"
-               author="Lucas Reeh">
-        <ext:dropRole roleName="my_role"></ext:dropRole>
-    </changeSet>
-
-	<changeSet id="test"
-               author="Lucas Reeh">
-        <ext:dropSchema schemaName="my_schema"></ext:dropSchema>
-    </changeSet>
+	<!-- and many more -->
 	
 </databaseChangeLog>
 ```
+
+See test resources directory for more examples
