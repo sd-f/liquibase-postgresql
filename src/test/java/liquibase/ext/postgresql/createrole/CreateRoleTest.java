@@ -3,6 +3,9 @@
 package liquibase.ext.postgresql.createrole;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -15,13 +18,15 @@ import liquibase.exception.LiquibaseException;
 import liquibase.exception.ValidationErrors;
 import liquibase.ext.postgresql.BaseTestCase;
 import liquibase.ext.postgresql.droprole.DropRoleChange;
+import liquibase.ext.postgresql.role.RoleOptionsElement;
 import liquibase.sql.Sql;
 import liquibase.statement.SqlStatement;
+import liquibase.util.ISODateFormat;
 import org.junit.Assert;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -30,22 +35,29 @@ import static org.junit.Assert.assertTrue;
 public class CreateRoleTest extends BaseTestCase {
 
   @Test
-  public void generateStatements() {
+  public void generateStatements() throws ParseException {
     // given
     CreateRoleChange change = new CreateRoleChange();
 
     change.setRoleName("my_role");
-    change.setPassword("my_password");
-    change.setConnectionLimit(1);
-    change.setCreateDatabase(Boolean.TRUE);
-    change.setCreateRole(Boolean.TRUE);
-    change.setEncryptedPassword(Boolean.TRUE);
-    change.setInherit(Boolean.TRUE);
-    change.setLoginAllowed(Boolean.FALSE);
-    change.setSuperUser(Boolean.TRUE);
 
-    Date currentDate = new Date();
-    change.setValidUntil(currentDate);
+    RoleOptionsElement options = new RoleOptionsElement();
+
+    options.setPassword("my_password");
+    options.setConnectionLimit(BigInteger.valueOf(1));
+    options.setCreateDatabase(Boolean.TRUE);
+    options.setCreateRole(Boolean.TRUE);
+    options.setEncryptedPassword(Boolean.TRUE);
+    options.setInherit(Boolean.TRUE);
+    options.setLoginAllowed(Boolean.FALSE);
+    options.setSuperUser(Boolean.TRUE);
+
+    Date validUntilDate = new Date();
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+
+    options.setValidUntil(format.format(validUntilDate));
+
+    change.setOptions(options);
 
     // when
     SqlStatement[] sqlStatements = change.generateStatements(new PostgresDatabase());
@@ -53,15 +65,16 @@ public class CreateRoleTest extends BaseTestCase {
     // then
     assertEquals(1, sqlStatements.length);
     assertEquals("my_role", ((CreateRoleStatement) sqlStatements[0]).getRoleName());
-    assertEquals("my_password", ((CreateRoleStatement) sqlStatements[0]).getPassword());
-    assertEquals(new Integer(1), ((CreateRoleStatement) sqlStatements[0]).getConnectionLimit());
-    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).isCreateDatabase());
-    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).isCreateRole());
-    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).isEncryptedPassword());
-    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).isInherit());
-    assertEquals(Boolean.FALSE, ((CreateRoleStatement) sqlStatements[0]).isLoginAllowed());
-    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).isSuperUser());
-    assertEquals(currentDate, ((CreateRoleStatement) sqlStatements[0]).getValidUntil());
+    assertNotNull(((CreateRoleStatement) sqlStatements[0]).getRoleOptions());
+    assertEquals("my_password", ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getPassword());
+    assertEquals(BigInteger.valueOf(1), ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getConnectionLimit());
+    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getCreateDatabase());
+    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getCreateRole());
+    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getEncryptedPassword());
+    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getInherit());
+    assertEquals(Boolean.FALSE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getLoginAllowed());
+    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getSuperUser());
+    assertEquals(new ISODateFormat().parse(format.format(validUntilDate)), ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getValidUntil());
   }
 
   @Test
@@ -69,7 +82,9 @@ public class CreateRoleTest extends BaseTestCase {
     // given
     CreateRoleChange change = new CreateRoleChange();
     change.setRoleName("my_role");
-    change.setPassword("my_password");
+    RoleOptionsElement options = new RoleOptionsElement();
+    options.setPassword("my_password");
+    change.setOptions(options);
 
     // when
     String message = change.getConfirmationMessage();
@@ -105,7 +120,7 @@ public class CreateRoleTest extends BaseTestCase {
   }
 
   @Test
-  public void validateNulls() {
+  public void validateNullRoleName() {
     // given
     CreateRoleChange change = new CreateRoleChange();
 
@@ -113,8 +128,38 @@ public class CreateRoleTest extends BaseTestCase {
     ValidationErrors errors = change.validate(new PostgresDatabase());
 
     // then
+    assertEquals("errors", 1, errors.getErrorMessages().size());
     assertTrue("contains error roleName", errors.getErrorMessages().contains("roleName is required for createRole on postgresql"));
-    assertTrue("contains error password", errors.getErrorMessages().contains("password is required for createRole on postgresql"));
+  }
+
+  @Test
+  public void validateNullOptionsMissing() {
+    // given
+    CreateRoleChange change = new CreateRoleChange();
+    change.setRoleName("my_role");
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertEquals("errors", 1, errors.getErrorMessages().size());
+    assertTrue("contains error options", errors.getErrorMessages().contains("options is required"));
+  }
+
+  @Test
+  public void validateNullPasswordMissing() {
+    // given
+    CreateRoleChange change = new CreateRoleChange();
+    change.setRoleName("my_role");
+    RoleOptionsElement options = new RoleOptionsElement();
+    change.setOptions(options);
+
+    // when
+    ValidationErrors errors = change.validate(new PostgresDatabase());
+
+    // then
+    assertEquals("errors", 1, errors.getErrorMessages().size());
+    assertTrue("contains error password", errors.getErrorMessages().contains("password is required"));
   }
 
   @Test
@@ -122,7 +167,9 @@ public class CreateRoleTest extends BaseTestCase {
     // given
     CreateRoleChange change = new CreateRoleChange();
     change.setRoleName("");
-    change.setPassword("");
+    RoleOptionsElement options = new RoleOptionsElement();
+    options.setPassword("");
+    change.setOptions(options);
 
     // when
     ValidationErrors errors = change.validate(new PostgresDatabase());

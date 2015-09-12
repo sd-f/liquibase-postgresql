@@ -9,7 +9,7 @@
 
     <xs:element name="vacuum">
         <xs:complexType>
-            <xs:attribute name="tableName" type="xs:string" use="required"/>
+            <xs:attribute name="tableName" type="xs:string"/>
             <xs:attribute name="catalogName" type="xs:string"/>
             <xs:attribute name="schemaName" type="xs:string"/>
         </xs:complexType>
@@ -19,16 +19,10 @@
 
     <xs:element name="createRole">
         <xs:complexType>
+            <xs:sequence>
+                <xs:element name="options" type="alterRoleOptionsType"/>
+            </xs:sequence>
             <xs:attribute name="roleName" type="xs:string" use="required"/>
-            <xs:attribute name="password" type="xs:string" use="required"/>
-            <xs:attribute name="superUser" type="boolLookup"/>
-            <xs:attribute name="createDatabase" type="boolLookup"/>
-            <xs:attribute name="createRole" type="boolLookup"/>
-            <xs:attribute name="inherit" type="boolLookup"/>
-            <xs:attribute name="loginAllowed" type="boolLookup"/>
-            <xs:attribute name="connectionLimit" type="xs:integer"/>
-            <xs:attribute name="encryptedPassword" type="boolLookup"/>
-            <xs:attribute name="validUntil" type="xs:dateTime"/>
         </xs:complexType>
     </xs:element>
 
@@ -38,12 +32,69 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="alterRole">
+        <xs:complexType>
+            <xs:choice maxOccurs="1" minOccurs="1">
+                <xs:element name="options" type="alterRoleOptionsType"/>
+                <xs:element name="set" type="alterRoleSetType"/>
+                <xs:element name="reset" type="alterRoleResetType"/>
+                <xs:element name="renameTo" type="alterRoleRenameToType"/>
+            </xs:choice>
+            <xs:attribute name="roleName" type="alterRoleNameLookup" use="optional"/>
+            <xs:attribute name="inDatabase" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="alterRoleNameLookup">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ALL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="alterRoleOptionsType">
+        <xs:attribute name="password" type="xs:string" use="required"/>
+        <xs:attribute name="superUser" type="boolLookup"/>
+        <xs:attribute name="createDatabase" type="boolLookup"/>
+        <xs:attribute name="createRole" type="boolLookup"/>
+        <xs:attribute name="inherit" type="boolLookup"/>
+        <xs:attribute name="loginAllowed" type="boolLookup"/>
+        <xs:attribute name="connectionLimit" type="xs:integer"/>
+        <xs:attribute name="encryptedPassword" type="boolLookup"/>
+        <xs:attribute name="validUntil" type="xs:dateTime"/>
+    </xs:complexType>
+
+    <xs:complexType name="alterRoleSetType">
+        <xs:attribute name="parameter" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="alterRoleSetTypeParameterValueLookup"/>
+        <xs:attribute name="fromCurrent" type="boolLookup"/>
+    </xs:complexType>
+
+    <xs:simpleType name="alterRoleSetTypeParameterValueLookup">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DEFAULT"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="alterRoleResetType">
+        <xs:attribute name="parameter" type="alterRoleResetTypeParameterValueLookup"/>
+    </xs:complexType>
+
+    <xs:simpleType name="alterRoleResetTypeParameterValueLookup">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ALL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="alterRoleRenameToType">
+        <xs:attribute name="schema" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
     <!-- schema -->
 
     <xs:element name="createSchema">
         <xs:complexType>
             <xs:attribute name="schemaName" type="xs:string" use="required"/>
-            <xs:attribute name="authorization" type="xs:string" use="required"/>
+            <xs:attribute name="authorization" type="xs:string"/>
         </xs:complexType>
     </xs:element>
 
@@ -57,11 +108,11 @@
 
     <xs:element name="alterSchema">
         <xs:complexType>
-            <xs:attribute name="schemaName" type="xs:string" use="required"/>
             <xs:choice maxOccurs="1" minOccurs="1">
                 <xs:element name="renameTo" type="alterSchemaRenameToType"/>
                 <xs:element name="ownerTo" type="alterSchemaOwnerToType"/>
             </xs:choice>
+            <xs:attribute name="schemaName" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
 
@@ -101,7 +152,15 @@
     </xs:element>
 
     <xs:simpleType name="privilegesForLookup">
+        <xs:annotation>
+            <xs:appinfo>
+                <xs:documentation>
+                    USER or ROLE
+                </xs:documentation>
+            </xs:appinfo>
+        </xs:annotation>
         <xs:restriction base="xs:token">
+            <xs:enumeration value=""/>
             <xs:enumeration value="USER"/>
             <xs:enumeration value="ROLE"/>
         </xs:restriction>
@@ -110,43 +169,44 @@
     <xs:complexType name="grantType">
         <xs:attribute name="operation" type="grantOperationsLookup" use="required"></xs:attribute>
         <xs:attribute name="onObjects" type="grantObjectsLookup" use="required"></xs:attribute>
-        <xs:attribute name="toRole" type="roleNameLookup" use="required">
-            <xs:annotation>
-                <xs:appinfo>
-                    <xs:documentation>
-                        role_name or PUBLIC
-                    </xs:documentation>
-                </xs:appinfo>
-            </xs:annotation>
-        </xs:attribute>
+        <xs:attribute name="toRole" type="roleNameType"/>
         <xs:attribute name="group" type="boolLookup"/>
+        <xs:attribute name="withGrantOption" type="boolLookup"/>
     </xs:complexType>
 
     <xs:complexType name="revokeType">
         <xs:attribute name="operation" type="grantOperationsLookup" use="required"></xs:attribute>
         <xs:attribute name="onObjects" type="grantObjectsLookup" use="required"></xs:attribute>
-        <xs:attribute name="fromRole" type="roleNameLookup" use="required">
-            <xs:annotation>
-                <xs:appinfo>
-                    <xs:documentation>
-                        role_name or PUBLIC
-                    </xs:documentation>
-                </xs:appinfo>
-            </xs:annotation>
-        </xs:attribute>
+        <xs:attribute name="fromRole" type="roleNameType"/>
         <xs:attribute name="group" type="boolLookup"/>
         <xs:attribute name="restrict" type="boolLookup"/>
         <xs:attribute name="cascade" type="boolLookup"/>
     </xs:complexType>
 
+    <xs:simpleType name="roleNameType">
+        <xs:annotation>
+            <xs:appinfo>
+                <xs:documentation>
+                    role_name or PUBLIC
+                </xs:documentation>
+            </xs:appinfo>
+        </xs:annotation>
+        <xs:union memberTypes="roleNameAnyString roleNameLookup"></xs:union>
+    </xs:simpleType>
+
+    <xs:simpleType name="roleNameAnyString">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
     <xs:simpleType name="roleNameLookup">
-        <xs:restriction base="xs:string">
+        <xs:restriction base="xs:token">
             <xs:enumeration value="PUBLIC"/>
         </xs:restriction>
     </xs:simpleType>
 
     <xs:simpleType name="boolLookup">
         <xs:restriction base="xs:string">
+            <xs:enumeration value=""/>
             <xs:enumeration value="true"/>
             <xs:enumeration value="false"/>
         </xs:restriction>

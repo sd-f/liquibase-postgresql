@@ -4,13 +4,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
-                        https://softwaredesign.foundation/xsd/liquibase https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
     <changeSet id="test"
                author="Lucas Reeh">
         <ext:alterSchema schemaName="my_schema">
-            <ext:renameTo schema="my_new_schema"></ext:renameTo>
-            <ext:ownerTo owner=""></ext:ownerTo>
+            <ext:ownerTo owner="" />
         </ext:alterSchema>
     </changeSet>
 

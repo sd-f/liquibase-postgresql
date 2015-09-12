@@ -4,33 +4,33 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
-                        https://softwaredesign.foundation/xsd/liquibase https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
     <changeSet id="test"
                author="Lucas Reeh">
-        <ext:createRole roleName="my_role"
-                        password="my_password"
-                        connectionLimit="1"
-                        createDatabase="true"
-                        encryptedPassword="true"
-                        createRole="true"
-                        inherit="true"
-                        loginAllowed="true"
-                        superUser="true"
-                        validUntil="2002-05-30T09:00:00">
+        <ext:createRole roleName="my_role">
+            <ext:options password="my_password"
+                         connectionLimit="1"
+                         createDatabase="true"
+                         encryptedPassword="true"
+                         createRole="true"
+                         inherit="true"
+                         loginAllowed="true"
+                         superUser="true"
+                         validUntil="2002-05-30T09:00:00" />
         </ext:createRole>
     </changeSet>
 
     <changeSet id="test2"
                author="Lucas Reeh">
-        <ext:createRole roleName="my_role"
-                        password="my_password"
-                        createDatabase="false"
-                        encryptedPassword="false"
-                        createRole="false"
-                        inherit="false"
-                        loginAllowed="false"
-                        superUser="false">
+        <ext:createRole roleName="my_role">
+            <ext:options password="my_password"
+                         createDatabase="false"
+                         encryptedPassword="false"
+                         createRole="false"
+                         inherit="false"
+                         loginAllowed="false"
+                         superUser="false" />
         </ext:createRole>
     </changeSet>
 

@@ -1,9 +1,8 @@
-package liquibase.ext.postgresql.createrole;
+package liquibase.ext.postgresql.alterrole;
 
 import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.ValidationErrors;
-import liquibase.ext.postgresql.role.RoleOptionsSqlBuilder;
 import liquibase.ext.postgresql.validation.AdvancedValidationErrors;
 import liquibase.sql.Sql;
 import liquibase.sql.UnparsedSql;
@@ -11,35 +10,31 @@ import liquibase.sqlgenerator.SqlGeneratorChain;
 import liquibase.sqlgenerator.core.AbstractSqlGenerator;
 import liquibase.structure.DatabaseObject;
 
-public class CreateRoleGenerator extends AbstractSqlGenerator<CreateRoleStatement> {
+public class AlterRoleGenerator extends AbstractSqlGenerator<AlterRoleStatement> {
 
   @Override
-  public boolean supports(CreateRoleStatement statement, Database database) {
+  public boolean supports(AlterRoleStatement statement, Database database) {
     return database instanceof PostgresDatabase;
   }
 
   @Override
-  public ValidationErrors validate(CreateRoleStatement statement, Database database, SqlGeneratorChain chain) {
+  public ValidationErrors validate(AlterRoleStatement statement, Database database, SqlGeneratorChain chain) {
     AdvancedValidationErrors validationErrors = new AdvancedValidationErrors();
     validationErrors.checkRequired("roleName", statement.getRoleName());
-    validationErrors.checkRequired("options", statement.getRoleOptions());
-    if (statement.getRoleOptions() != null) {
-      validationErrors.checkRequired("password", statement.getRoleOptions().getPassword());
-    }
     return validationErrors;
   }
 
   /**
-   * creates statement for create role in postgres sql
+   * creates statement for altering role in postgres sql<br />
    * <p>
    * @param statement
    * @param database
    * @param chain
-   * @return <br />
-   * @see @ http://www.postgresql.org/docs/9.4/static/sql-createrole.html where option can be:<br />
+   * @return <p>
+   * @see @ http://www.postgresql.org/docs/9.4/static/sql-alterrole.html where option can be:<br />
    * <pre>
    * {@code
-   * CREATE ROLE name [ [ WITH ] option [ ... ] ]
+   * ALTER ROLE name [ [ WITH ] option [ ... ] ]
    * <p>
    * where option can be:
    * <p>
@@ -49,27 +44,26 @@ public class CreateRoleGenerator extends AbstractSqlGenerator<CreateRoleStatemen
    * | CREATEUSER | NOCREATEUSER
    * | INHERIT | NOINHERIT
    * | LOGIN | NOLOGIN
+   * | REPLICATION | NOREPLICATION
    * | CONNECTION LIMIT connlimit
    * | [ ENCRYPTED | UNENCRYPTED ] PASSWORD 'password'
    * | VALID UNTIL 'timestamp'
-   * | IN ROLE role_name [, ...]
-   * | IN GROUP role_name [, ...]
-   * | ROLE role_name [, ...]
-   * | ADMIN role_name [, ...]
-   * | USER role_name [, ...]
-   * | SYSID uid
+   * <p>
+   * ALTER ROLE name RENAME TO new_name
+   * <p>
+   * ALTER ROLE name [ IN DATABASE database_name ] SET configuration_parameter { TO | = } { value | DEFAULT }
+   * ALTER ROLE { name | ALL } [ IN DATABASE database_name ] SET configuration_parameter FROM CURRENT
+   * ALTER ROLE { name | ALL } [ IN DATABASE database_name ] RESET configuration_parameter
+   * ALTER ROLE { name | ALL } [ IN DATABASE database_name ] RESET ALL
    * }
    * </pre>
    */
   @Override
-  public Sql[] generateSql(CreateRoleStatement statement, Database database, SqlGeneratorChain chain) {
-    StringBuilder sql = new StringBuilder("CREATE ROLE ");
+  public Sql[] generateSql(AlterRoleStatement statement, Database database, SqlGeneratorChain chain) {
+    StringBuilder sql = new StringBuilder("ALTER ROLE ");
 
     sql.append(database.escapeObjectName(statement.getRoleName(), DatabaseObject.class));
     sql.append(" ");
-
-    RoleOptionsSqlBuilder roleOptionsSqlBuilder = new RoleOptionsSqlBuilder(sql, database);
-    roleOptionsSqlBuilder.append(statement.getRoleOptions());
 
     return new Sql[]{new UnparsedSql(sql.toString())};
   }

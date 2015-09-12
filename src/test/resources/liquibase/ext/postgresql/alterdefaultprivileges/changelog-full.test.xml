@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
-                        https://softwaredesign.foundation/xsd/liquibase https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
     <changeSet id="test" author="Lucas Reeh">
         <ext:alterDefaultPrivileges forPrivilegeType="USER"
@@ -13,7 +13,6 @@
             <ext:grant operation="SELECT"
                        onObjects="TABLES"
                        toRole="my_other_role"
-                       cascade="false"
                        withGrantOption="true"/>
         </ext:alterDefaultPrivileges>
     </changeSet>
@@ -40,6 +39,6 @@
                         cascade="true"/>
         </ext:alterDefaultPrivileges>
     </changeSet>
-    
+
 
 </databaseChangeLog>

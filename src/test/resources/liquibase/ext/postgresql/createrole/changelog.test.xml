@@ -4,11 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
-                        https://softwaredesign.foundation/xsd/liquibase https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
     <changeSet id="test"
                author="Lucas Reeh">
-        <ext:createRole roleName="my_role" password="my_password"></ext:createRole>
+        <ext:createRole roleName="my_role">
+            <ext:options password="my_password" />
+        </ext:createRole>
     </changeSet>
 
 </databaseChangeLog>
