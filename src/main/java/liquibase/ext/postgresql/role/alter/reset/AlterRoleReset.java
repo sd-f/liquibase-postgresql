@@ -11,9 +11,6 @@ public class AlterRoleReset {
   private String parameter;
   private String inDatabase;
 
-  public AlterRoleReset() {
-  }
-
   public void setAttributesFromElement(AlterRoleResetElement element) {
     setParameter(element.getParameter());
     setInDatabase(element.getInDatabase());

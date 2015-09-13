@@ -10,9 +10,6 @@ public class AlterRoleRenameTo {
 
   private String name;
 
-  public AlterRoleRenameTo() {
-  }
-
   public void setAttributesFromElement(AlterRoleRenameToElement element) {
     setName(element.getName());
   }

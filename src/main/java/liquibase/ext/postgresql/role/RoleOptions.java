@@ -29,9 +29,6 @@ public class RoleOptions {
   private Boolean replication;
   private Date validUntil;
 
-  public RoleOptions() {
-  }
-
   public void setAttributesFromElement(RoleOptionsElement optionsElement) {
     if (optionsElement != null) {
       password = optionsElement.getPassword();

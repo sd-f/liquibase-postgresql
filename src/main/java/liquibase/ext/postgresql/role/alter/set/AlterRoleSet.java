@@ -13,9 +13,6 @@ public class AlterRoleSet {
   private String value;
   private Boolean fromCurrent;
 
-  public AlterRoleSet() {
-  }
-
   public void setAttributesFromElement(AlterRoleSetElement element) {
     setParameter(element.getParameter());
     setInDatabase(element.getInDatabase());
