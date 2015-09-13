@@ -16,7 +16,7 @@ import liquibase.util.ISODateFormat;
  */
 public class RoleOptions {
 
-  private final static Logger LOGGER = LogFactory.getInstance().getLog();
+  static Logger LOGGER = LogFactory.getInstance().getLog();
 
   private String password;
   private Boolean superUser;
@@ -31,7 +31,7 @@ public class RoleOptions {
   public RoleOptions() {
   }
 
-  public RoleOptions(RoleOptionsElement optionsElement) {
+  public void setAttributesFromElement(RoleOptionsElement optionsElement) {
     if (optionsElement != null) {
       password = optionsElement.getPassword();
       connectionLimit = optionsElement.getConnectionLimit();
@@ -44,7 +44,6 @@ public class RoleOptions {
       validUntil = null;
       if (optionsElement.getValidUntil() != null) {
         try {
-
           validUntil = new ISODateFormat().parse(optionsElement.getValidUntil());
         } catch (ParseException ex) {
           LOGGER.severe("Error parsing options", ex);

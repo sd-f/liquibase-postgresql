@@ -6,14 +6,14 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
-    <changeSet id="test1"
+    <changeSet id="as_02"
                author="Lucas Reeh">
         <ext:alterSchema schemaName="my_schema">
             <ext:renameTo schema="my_new_schema"></ext:renameTo>
         </ext:alterSchema>
     </changeSet>
 
-    <changeSet id="test2"
+    <changeSet id="as_03"
                author="Lucas Reeh">
         <ext:alterSchema schemaName="my_schema">
             <ext:ownerTo owner="my_owner"></ext:ownerTo>

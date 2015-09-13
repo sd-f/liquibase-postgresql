@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
-    <changeSet id="test" author="Lucas Reeh">
+    <changeSet id="adp_11" author="Lucas Reeh">
         <ext:alterDefaultPrivileges forPrivilegeType="ROLE"
                                     inSchema="my_schema"
                                     targetRole="my_role">
@@ -18,7 +18,7 @@
         </ext:alterDefaultPrivileges>
     </changeSet>
 
-    <changeSet id="test2" author="Lucas Reeh">
+    <changeSet id="adp_12" author="Lucas Reeh">
         <ext:alterDefaultPrivileges forPrivilegeType="ROLE"
                                     inSchema="my_schema"
                                     targetRole="my_role">
@@ -29,7 +29,7 @@
         </ext:alterDefaultPrivileges>
     </changeSet>
 
-    <changeSet id="test3" author="Lucas Reeh">
+    <changeSet id="adp_13" author="Lucas Reeh">
         <ext:alterDefaultPrivileges forPrivilegeType="ROLE"
                                     inSchema="my_schema"
                                     targetRole="my_role">

@@ -6,32 +6,32 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
-    <changeSet id="test"
+    <changeSet id="ds_03"
                author="Lucas Reeh">
         <ext:dropSchema schemaName="my_schema" restrict="true"></ext:dropSchema>
     </changeSet>
 
-    <changeSet id="test2"
+    <changeSet id="ds_04"
                author="Lucas Reeh">
         <ext:dropSchema schemaName="my_schema" cascade="true"></ext:dropSchema>
     </changeSet>
 
-    <changeSet id="test3"
+    <changeSet id="ds_05"
                author="Lucas Reeh">
         <ext:dropSchema schemaName="my_schema" restrict="false"></ext:dropSchema>
     </changeSet>
 
-    <changeSet id="test4"
+    <changeSet id="ds_06"
                author="Lucas Reeh">
         <ext:dropSchema schemaName="my_schema" cascade="false"></ext:dropSchema>
     </changeSet>
 
-    <changeSet id="test5"
+    <changeSet id="ds_07"
                author="Lucas Reeh">
         <ext:dropSchema schemaName="my_schema"></ext:dropSchema>
     </changeSet>
 
-    <changeSet id="test6"
+    <changeSet id="ds_08"
                author="Lucas Reeh">
         <ext:dropSchema schemaName="my_schema" cascade="true"></ext:dropSchema>
     </changeSet>

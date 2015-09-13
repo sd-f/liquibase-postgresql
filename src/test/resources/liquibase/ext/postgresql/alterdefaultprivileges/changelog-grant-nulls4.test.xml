@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
-    <changeSet id="test" author="Lucas Reeh">
+    <changeSet id="adp_07" author="Lucas Reeh">
         <ext:alterDefaultPrivileges inSchema="my_schema"
                                     forPrivilegeType="">
             <ext:grant operation="ALL"

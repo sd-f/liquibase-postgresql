@@ -37,7 +37,8 @@ public class CreateRoleChange extends AbstractChange {
     statement.setRoleName(getRoleName());
 
     if (getOptions() != null) {
-      RoleOptions roleOptions = new RoleOptions(getOptions());
+      RoleOptions roleOptions = new RoleOptions();
+      roleOptions.setAttributesFromElement(getOptions());
       statement.setRoleOptions(roleOptions);
     }
 

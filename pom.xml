@@ -19,7 +19,8 @@
         <jdk.version>1.8</jdk.version>
         <liquibase.version>3.4.1</liquibase.version>
         <junit.version>4.12</junit.version>
-        <dbunit.version>2.5.1</dbunit.version>
+        <mockito.version>1.10.19</mockito.version>
+        <powermock.version>1.6.2</powermock.version>
         <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
         <snakeyaml.version>1.16</snakeyaml.version>
     </properties>
@@ -82,6 +83,12 @@
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>${snakeyaml.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

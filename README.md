@@ -77,16 +77,12 @@ https://softwaredesign.foundation/jira/projects/LPMP
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
-                        https://softwaredesign.foundation/xsd/liquibase https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
-    <changeSet id="test1"
-               author="Lucas Reeh">
-        <ext:createRole roleName="my_role" password="my_password"></ext:createRole>
-    </changeSet>
 	
-	<changeSet id="test2"
+	<changeSet id="example_creating_schema"
                author="Lucas Reeh">
-        <ext:createSchema schemaName="my_schema"></ext:createSchema>
+        <ext:createSchema schemaName="my_schema"/>
     </changeSet>
 	
 	<!-- and many more -->

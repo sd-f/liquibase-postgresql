@@ -11,9 +11,11 @@ import liquibase.changelog.DatabaseChangeLog;
 import liquibase.database.Database;
 import liquibase.database.OfflineConnection;
 import liquibase.exception.LiquibaseException;
+import liquibase.logging.LogFactory;
 import liquibase.resource.FileSystemResourceAccessor;
 import liquibase.sql.Sql;
 import liquibase.sqlgenerator.SqlGeneratorFactory;
+import org.junit.After;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -26,6 +28,11 @@ public abstract class BaseTestCase {
   private static final String TEST_BASE_PATH = "/liquibase/ext/postgresql";
   private String basePath;
   private Database database;
+
+  @After
+  public void after() {
+    LogFactory.reset();
+  }
 
   public Liquibase newLiquibase(String changeLogFile) throws LiquibaseException, IOException {
     this.setBasePath(changeLogFile);
