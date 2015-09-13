@@ -3,16 +3,13 @@
 package liquibase.ext.postgresql.role.alter;
 
 import liquibase.ext.postgresql.xml.Constants;
-import liquibase.serializer.AbstractLiquibaseSerializable;
 
 /**
  *
  * @author Lucas Reeh <lreeh@tugraz.at>
  */
-public class AlterRoleSet extends AbstractLiquibaseSerializable {
+public class AlterRoleSet extends AlterRoleParameter {
 
-  private String parameter;
-  private String inDatabase;
   private String value;
   private Boolean fromCurrent;
 
@@ -24,22 +21,6 @@ public class AlterRoleSet extends AbstractLiquibaseSerializable {
   @Override
   public String getSerializedObjectName() {
     return "set";
-  }
-
-  public String getParameter() {
-    return parameter;
-  }
-
-  public void setParameter(String parameter) {
-    this.parameter = parameter;
-  }
-
-  public String getInDatabase() {
-    return inDatabase;
-  }
-
-  public void setInDatabase(String inDatabase) {
-    this.inDatabase = inDatabase;
   }
 
   public String getValue() {
