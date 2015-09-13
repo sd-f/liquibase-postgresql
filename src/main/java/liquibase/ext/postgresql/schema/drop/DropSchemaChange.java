@@ -2,16 +2,15 @@ package liquibase.ext.postgresql.schema.drop;
 
 import java.text.MessageFormat;
 
-import liquibase.change.AbstractChange;
 import liquibase.change.ChangeMetaData;
 import liquibase.change.DatabaseChange;
 import liquibase.database.Database;
+import liquibase.ext.postgresql.schema.SchemaChange;
 import liquibase.statement.SqlStatement;
 
 @DatabaseChange(name = "dropSchema", description = "Drop schema", priority = ChangeMetaData.PRIORITY_DEFAULT)
-public class DropSchemaChange extends AbstractChange {
+public class DropSchemaChange extends SchemaChange {
 
-  private String schemaName;
   private Boolean cascade = false;
   private Boolean restrict = true;
 
@@ -29,14 +28,6 @@ public class DropSchemaChange extends AbstractChange {
     statement.setCascade(isCascade());
 
     return new SqlStatement[]{statement};
-  }
-
-  public String getSchemaName() {
-    return schemaName;
-  }
-
-  public void setSchemaName(String schemaName) {
-    this.schemaName = schemaName;
   }
 
   public Boolean isCascade() {

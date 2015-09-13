@@ -1,6 +1,6 @@
 /*
  */
-package liquibase.ext.postgresql.role.alter.rename;
+package liquibase.ext.postgresql.role.alter;
 
 import liquibase.ext.postgresql.xml.Constants;
 import liquibase.serializer.AbstractLiquibaseSerializable;
@@ -9,7 +9,7 @@ import liquibase.serializer.AbstractLiquibaseSerializable;
  *
  * @author Lucas Reeh <lreeh@tugraz.at>
  */
-public class AlterRoleRenameToElement extends AbstractLiquibaseSerializable {
+public class AlterRoleRenameTo extends AbstractLiquibaseSerializable {
 
   private String name;
 

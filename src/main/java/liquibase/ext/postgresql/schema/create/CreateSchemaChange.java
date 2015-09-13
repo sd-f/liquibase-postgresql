@@ -2,18 +2,17 @@ package liquibase.ext.postgresql.schema.create;
 
 import java.text.MessageFormat;
 
-import liquibase.change.AbstractChange;
 import liquibase.change.Change;
 import liquibase.change.ChangeMetaData;
 import liquibase.change.DatabaseChange;
 import liquibase.database.Database;
+import liquibase.ext.postgresql.schema.SchemaChange;
 import liquibase.ext.postgresql.schema.drop.DropSchemaChange;
 import liquibase.statement.SqlStatement;
 
 @DatabaseChange(name = "createSchema", description = "Create schema", priority = ChangeMetaData.PRIORITY_DEFAULT)
-public class CreateSchemaChange extends AbstractChange {
+public class CreateSchemaChange extends SchemaChange {
 
-  private String schemaName;
   private String authorization;
 
   @Override
@@ -37,14 +36,6 @@ public class CreateSchemaChange extends AbstractChange {
     inverse.setSchemaName(getSchemaName());
     inverse.setRestrict(Boolean.TRUE);
     return new Change[]{inverse,};
-  }
-
-  public String getSchemaName() {
-    return schemaName;
-  }
-
-  public void setSchemaName(String schemaName) {
-    this.schemaName = schemaName;
   }
 
   public String getAuthorization() {

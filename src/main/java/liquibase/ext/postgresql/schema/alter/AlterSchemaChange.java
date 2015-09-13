@@ -2,16 +2,15 @@ package liquibase.ext.postgresql.schema.alter;
 
 import java.text.MessageFormat;
 
-import liquibase.change.AbstractChange;
 import liquibase.change.ChangeMetaData;
 import liquibase.change.DatabaseChange;
 import liquibase.database.Database;
+import liquibase.ext.postgresql.schema.SchemaChange;
 import liquibase.statement.SqlStatement;
 
 @DatabaseChange(name = "alterSchema", description = "Alter schema", priority = ChangeMetaData.PRIORITY_DEFAULT)
-public class AlterSchemaChange extends AbstractChange {
+public class AlterSchemaChange extends SchemaChange {
 
-  private String schemaName;
   private AlterSchemaRenameToElement renameTo;
   private AlterSchemaOwnerToElement ownerTo;
 
@@ -34,14 +33,6 @@ public class AlterSchemaChange extends AbstractChange {
     }
 
     return new SqlStatement[]{statement};
-  }
-
-  public String getSchemaName() {
-    return schemaName;
-  }
-
-  public void setSchemaName(String schemaName) {
-    this.schemaName = schemaName;
   }
 
   public AlterSchemaRenameToElement getRenameTo() {

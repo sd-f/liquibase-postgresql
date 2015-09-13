@@ -3,8 +3,6 @@ package liquibase.ext.postgresql.role.alter;
 import liquibase.database.Database;
 import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.ValidationErrors;
-import liquibase.ext.postgresql.role.alter.reset.AlterRoleReset;
-import liquibase.ext.postgresql.role.alter.set.AlterRoleSet;
 import liquibase.ext.postgresql.role.RoleOptionsSqlBuilder;
 import liquibase.ext.postgresql.validation.AdvancedValidationErrors;
 import liquibase.sql.Sql;

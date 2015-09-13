@@ -1,6 +1,6 @@
 /*
  */
-package liquibase.ext.postgresql.role.alter.reset;
+package liquibase.ext.postgresql.role.alter;
 
 import liquibase.ext.postgresql.xml.Constants;
 import liquibase.serializer.AbstractLiquibaseSerializable;
@@ -9,10 +9,12 @@ import liquibase.serializer.AbstractLiquibaseSerializable;
  *
  * @author Lucas Reeh <lreeh@tugraz.at>
  */
-public class AlterRoleResetElement extends AbstractLiquibaseSerializable {
+public class AlterRoleSet extends AbstractLiquibaseSerializable {
 
   private String parameter;
   private String inDatabase;
+  private String value;
+  private Boolean fromCurrent;
 
   @Override
   public String getSerializedObjectNamespace() {
@@ -21,7 +23,7 @@ public class AlterRoleResetElement extends AbstractLiquibaseSerializable {
 
   @Override
   public String getSerializedObjectName() {
-    return "reset";
+    return "set";
   }
 
   public String getParameter() {
@@ -38,6 +40,22 @@ public class AlterRoleResetElement extends AbstractLiquibaseSerializable {
 
   public void setInDatabase(String inDatabase) {
     this.inDatabase = inDatabase;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
+  }
+
+  public Boolean getFromCurrent() {
+    return fromCurrent;
+  }
+
+  public void setFromCurrent(Boolean fromCurrent) {
+    this.fromCurrent = fromCurrent;
   }
 
 }

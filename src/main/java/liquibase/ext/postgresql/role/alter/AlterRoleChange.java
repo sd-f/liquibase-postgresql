@@ -5,12 +5,6 @@ import java.text.MessageFormat;
 import liquibase.change.ChangeMetaData;
 import liquibase.change.DatabaseChange;
 import liquibase.database.Database;
-import liquibase.ext.postgresql.role.alter.rename.AlterRoleRenameTo;
-import liquibase.ext.postgresql.role.alter.rename.AlterRoleRenameToElement;
-import liquibase.ext.postgresql.role.alter.reset.AlterRoleReset;
-import liquibase.ext.postgresql.role.alter.reset.AlterRoleResetElement;
-import liquibase.ext.postgresql.role.alter.set.AlterRoleSet;
-import liquibase.ext.postgresql.role.alter.set.AlterRoleSetElement;
 import liquibase.ext.postgresql.role.RoleChange;
 import liquibase.ext.postgresql.role.RoleOptions;
 import liquibase.statement.SqlStatement;
@@ -18,9 +12,9 @@ import liquibase.statement.SqlStatement;
 @DatabaseChange(name = "alterRole", description = "Alter role", priority = ChangeMetaData.PRIORITY_DEFAULT)
 public class AlterRoleChange extends RoleChange {
 
-  private AlterRoleRenameToElement renameTo;
-  private AlterRoleSetElement set;
-  private AlterRoleResetElement reset;
+  private AlterRoleRenameTo renameTo;
+  private AlterRoleSet set;
+  private AlterRoleReset reset;
 
   @Override
   public String getConfirmationMessage() {
@@ -39,48 +33,34 @@ public class AlterRoleChange extends RoleChange {
       statement.setOptions(optionsData);
     }
 
-    if (getRenameTo() != null) {
-      AlterRoleRenameTo renameToData = new AlterRoleRenameTo();
-      renameToData.setAttributesFromElement(getRenameTo());
-      statement.setRenameTo(renameToData);
-    }
-
-    if (getSet() != null) {
-      AlterRoleSet setData = new AlterRoleSet();
-      setData.setAttributesFromElement(getSet());
-      statement.setSet(setData);
-    }
-
-    if (getReset() != null) {
-      AlterRoleReset resetData = new AlterRoleReset();
-      resetData.setAttributesFromElement(getReset());
-      statement.setReset(resetData);
-    }
+    statement.setRenameTo(getRenameTo());
+    statement.setSet(getSet());
+    statement.setReset(getReset());
 
     return new SqlStatement[]{statement};
   }
 
-  public AlterRoleRenameToElement getRenameTo() {
+  public AlterRoleRenameTo getRenameTo() {
     return renameTo;
   }
 
-  public void setRenameTo(AlterRoleRenameToElement renameTo) {
+  public void setRenameTo(AlterRoleRenameTo renameTo) {
     this.renameTo = renameTo;
   }
 
-  public AlterRoleSetElement getSet() {
+  public AlterRoleSet getSet() {
     return set;
   }
 
-  public void setSet(AlterRoleSetElement set) {
+  public void setSet(AlterRoleSet set) {
     this.set = set;
   }
 
-  public AlterRoleResetElement getReset() {
+  public AlterRoleReset getReset() {
     return reset;
   }
 
-  public void setReset(AlterRoleResetElement reset) {
+  public void setReset(AlterRoleReset reset) {
     this.reset = reset;
   }
 

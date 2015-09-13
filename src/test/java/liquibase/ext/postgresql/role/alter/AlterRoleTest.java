@@ -18,9 +18,6 @@ import liquibase.exception.LiquibaseException;
 import liquibase.exception.ValidationErrors;
 import liquibase.ext.postgresql.BaseTestCase;
 import liquibase.ext.postgresql.role.RoleOptionsElement;
-import liquibase.ext.postgresql.role.alter.rename.AlterRoleRenameToElement;
-import liquibase.ext.postgresql.role.alter.reset.AlterRoleResetElement;
-import liquibase.ext.postgresql.role.alter.set.AlterRoleSetElement;
 import liquibase.ext.postgresql.xml.Constants;
 import liquibase.sql.Sql;
 import liquibase.statement.SqlStatement;
@@ -59,18 +56,18 @@ public class AlterRoleTest extends BaseTestCase {
 
     change.setOptions(options);
 
-    AlterRoleRenameToElement renameToElement = new AlterRoleRenameToElement();
+    AlterRoleRenameTo renameToElement = new AlterRoleRenameTo();
     renameToElement.setName("new_name");
 
     change.setRenameTo(renameToElement);
 
-    AlterRoleSetElement setElement = new AlterRoleSetElement();
+    AlterRoleSet setElement = new AlterRoleSet();
     setElement.setParameter("param1");
     setElement.setInDatabase("database1");
 
     change.setSet(setElement);
 
-    AlterRoleResetElement resetElement = new AlterRoleResetElement();
+    AlterRoleReset resetElement = new AlterRoleReset();
     resetElement.setParameter("param1");
     resetElement.setInDatabase("database1");
 
@@ -118,7 +115,7 @@ public class AlterRoleTest extends BaseTestCase {
   @Test
   public void elementRenameToNamespace() {
     // given
-    AlterRoleRenameToElement change = new AlterRoleRenameToElement();
+    AlterRoleRenameTo change = new AlterRoleRenameTo();
 
     // when
     // then
@@ -129,7 +126,7 @@ public class AlterRoleTest extends BaseTestCase {
   @Test
   public void elementSetNamespace() {
     // given
-    AlterRoleSetElement change = new AlterRoleSetElement();
+    AlterRoleSet change = new AlterRoleSet();
 
     // when
     // then
@@ -140,7 +137,7 @@ public class AlterRoleTest extends BaseTestCase {
   @Test
   public void elementResetNamespace() {
     // given
-    AlterRoleResetElement change = new AlterRoleResetElement();
+    AlterRoleReset change = new AlterRoleReset();
 
     // when
     // then
@@ -203,7 +200,7 @@ public class AlterRoleTest extends BaseTestCase {
   public void validateRenameNull() {
     // given
     AlterRoleChange change = new AlterRoleChange();
-    AlterRoleRenameToElement renameToElement = new AlterRoleRenameToElement();
+    AlterRoleRenameTo renameToElement = new AlterRoleRenameTo();
     change.setRoleName("name");
     change.setRenameTo(renameToElement);
 
@@ -219,7 +216,7 @@ public class AlterRoleTest extends BaseTestCase {
   public void validateRenameEmpty() {
     // given
     AlterRoleChange change = new AlterRoleChange();
-    AlterRoleRenameToElement renameToElement = new AlterRoleRenameToElement();
+    AlterRoleRenameTo renameToElement = new AlterRoleRenameTo();
     renameToElement.setName("");
     change.setRoleName("name");
     change.setRenameTo(renameToElement);
@@ -237,7 +234,7 @@ public class AlterRoleTest extends BaseTestCase {
     // given
     AlterRoleChange change = new AlterRoleChange();
     change.setRoleName("something");
-    AlterRoleSetElement element = new AlterRoleSetElement();
+    AlterRoleSet element = new AlterRoleSet();
     element.setValue("value");
     change.setSet(element);
 
@@ -254,7 +251,7 @@ public class AlterRoleTest extends BaseTestCase {
     // given
     AlterRoleChange change = new AlterRoleChange();
     change.setRoleName("something");
-    AlterRoleSetElement element = new AlterRoleSetElement();
+    AlterRoleSet element = new AlterRoleSet();
     element.setParameter("param");
     change.setSet(element);
 
@@ -271,7 +268,7 @@ public class AlterRoleTest extends BaseTestCase {
     // given
     AlterRoleChange change = new AlterRoleChange();
     change.setRoleName("something");
-    AlterRoleSetElement element = new AlterRoleSetElement();
+    AlterRoleSet element = new AlterRoleSet();
     element.setFromCurrent(Boolean.TRUE);
     element.setParameter("param");
     element.setValue("");

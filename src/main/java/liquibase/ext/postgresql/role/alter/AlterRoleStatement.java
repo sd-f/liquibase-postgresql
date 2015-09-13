@@ -1,8 +1,5 @@
 package liquibase.ext.postgresql.role.alter;
 
-import liquibase.ext.postgresql.role.alter.rename.AlterRoleRenameTo;
-import liquibase.ext.postgresql.role.alter.reset.AlterRoleReset;
-import liquibase.ext.postgresql.role.alter.set.AlterRoleSet;
 import liquibase.ext.postgresql.role.RoleOptions;
 import liquibase.statement.AbstractSqlStatement;
 
