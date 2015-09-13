@@ -9,7 +9,7 @@
     <changeSet id="cr_03"
                author="Lucas Reeh">
         <ext:createRole roleName="my_role">
-            <ext:options password="my_password" />
+            <ext:options password="my_password" replication="true" />
         </ext:createRole>
     </changeSet>
 

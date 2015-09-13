@@ -49,6 +49,7 @@ public class CreateRoleGenerator extends AbstractSqlGenerator<CreateRoleStatemen
    * | CREATEUSER | NOCREATEUSER
    * | INHERIT | NOINHERIT
    * | LOGIN | NOLOGIN
+   * | REPLICATION | NOREPLICATION
    * | CONNECTION LIMIT connlimit
    * | [ ENCRYPTED | UNENCRYPTED ] PASSWORD 'password'
    * | VALID UNTIL 'timestamp'

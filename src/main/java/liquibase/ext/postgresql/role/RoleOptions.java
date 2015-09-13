@@ -26,6 +26,7 @@ public class RoleOptions {
   private Boolean loginAllowed;
   private BigInteger connectionLimit;
   private Boolean encryptedPassword;
+  private Boolean replication;
   private Date validUntil;
 
   public RoleOptions() {
@@ -41,6 +42,7 @@ public class RoleOptions {
       inherit = optionsElement.getInherit();
       loginAllowed = optionsElement.getLoginAllowed();
       superUser = optionsElement.getSuperUser();
+      replication = optionsElement.getReplication();
       validUntil = null;
       if (optionsElement.getValidUntil() != null) {
         try {
@@ -122,6 +124,14 @@ public class RoleOptions {
 
   public void setValidUntil(Date validUntil) {
     this.validUntil = validUntil;
+  }
+
+  public Boolean getReplication() {
+    return replication;
+  }
+
+  public void setReplication(Boolean replication) {
+    this.replication = replication;
   }
 
 }

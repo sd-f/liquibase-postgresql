@@ -23,7 +23,7 @@ public class RoleOptionsSqlBuilder extends SqlBuilder {
     append(roleOptions.getCreateDatabase(), "CREATEDB", "NOCREATEDB", false);
     append(roleOptions.getCreateRole(), "CREATEROLE", "NOCREATEROLE", false);
     append(roleOptions.getInherit(), "INHERIT", "NOINHERIT", false);
-    append(roleOptions.getInherit(), "LOGIN", "NOLOGIN", false);
+    append(roleOptions.getLoginAllowed(), "LOGIN", "NOLOGIN", false);
 
     append(roleOptions.getConnectionLimit(), "CONNECTION LIMIT");
 
@@ -31,6 +31,7 @@ public class RoleOptionsSqlBuilder extends SqlBuilder {
 
     append(getDatabase().escapeStringForDatabase(roleOptions.getPassword()), "PASSWORD");
     append(roleOptions.getValidUntil(), "VALID UNTIL");
+    append(roleOptions.getReplication(), "REPLICATION", "NOREPLICATION");
     return this;
   }
 

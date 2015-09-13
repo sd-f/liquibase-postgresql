@@ -30,6 +30,7 @@ public class RoleOptionsSqlBuilderTest {
     options.setInherit(Boolean.TRUE);
     options.setLoginAllowed(Boolean.FALSE);
     options.setSuperUser(Boolean.TRUE);
+    options.setReplication(Boolean.TRUE);
 
     Date currentDate = new Date();
     options.setValidUntil(currentDate);
@@ -38,7 +39,7 @@ public class RoleOptionsSqlBuilderTest {
     String sqlString = builder.append(options).getSql().toString();
 
     // then
-    assertEquals("SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN CONNECTION LIMIT 1 ENCRYPTED PASSWORD 'my_password' VALID UNTIL '" + currentDate.toString() + "'", sqlString.trim());
+    assertEquals("SUPERUSER CREATEDB CREATEROLE INHERIT NOLOGIN CONNECTION LIMIT 1 ENCRYPTED PASSWORD 'my_password' VALID UNTIL '" + currentDate.toString() + "' REPLICATION", sqlString.trim());
   }
 
   @Test

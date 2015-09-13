@@ -21,6 +21,7 @@ public class RoleOptionsElement extends AbstractLiquibaseSerializable {
   private Boolean loginAllowed;
   private BigInteger connectionLimit;
   private Boolean encryptedPassword;
+  private Boolean replication;
   private String validUntil;
 
   @Override
@@ -103,6 +104,14 @@ public class RoleOptionsElement extends AbstractLiquibaseSerializable {
 
   public void setValidUntil(String validUntil) {
     this.validUntil = validUntil;
+  }
+
+  public Boolean getReplication() {
+    return replication;
+  }
+
+  public void setReplication(Boolean replication) {
+    this.replication = replication;
   }
 
 }

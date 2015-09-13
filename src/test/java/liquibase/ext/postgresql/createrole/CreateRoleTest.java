@@ -51,6 +51,7 @@ public class CreateRoleTest extends BaseTestCase {
     options.setInherit(Boolean.TRUE);
     options.setLoginAllowed(Boolean.FALSE);
     options.setSuperUser(Boolean.TRUE);
+    options.setReplication(Boolean.TRUE);
 
     Date validUntilDate = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
@@ -74,6 +75,7 @@ public class CreateRoleTest extends BaseTestCase {
     assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getInherit());
     assertEquals(Boolean.FALSE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getLoginAllowed());
     assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getSuperUser());
+    assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getReplication());
     assertEquals(new ISODateFormat().parse(format.format(validUntilDate)), ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getValidUntil());
   }
 
@@ -228,7 +230,7 @@ public class CreateRoleTest extends BaseTestCase {
 
     // then
     assertEquals("One statement generated", 1, sql.length);
-    assertEquals("Matching statement", "CREATE ROLE my_role NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN PASSWORD 'my_password'", sql[0].toSql());
+    assertEquals("Matching statement", "CREATE ROLE my_role NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN PASSWORD 'my_password' REPLICATION", sql[0].toSql());
 
   }
 
