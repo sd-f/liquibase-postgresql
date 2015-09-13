@@ -17,7 +17,7 @@ import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.LiquibaseException;
 import liquibase.exception.ValidationErrors;
 import liquibase.ext.postgresql.BaseTestCase;
-import liquibase.ext.postgresql.role.RoleOptionsElement;
+import liquibase.ext.postgresql.role.RoleOptions;
 import liquibase.ext.postgresql.xml.Constants;
 import liquibase.sql.Sql;
 import liquibase.statement.SqlStatement;
@@ -37,7 +37,7 @@ public class AlterRoleTest extends BaseTestCase {
 
     change.setRoleName("my_role");
 
-    RoleOptionsElement options = new RoleOptionsElement();
+    RoleOptions options = new RoleOptions();
 
     options.setPassword("my_password");
     options.setConnectionLimit(BigInteger.valueOf(1));

@@ -17,11 +17,10 @@ import liquibase.database.core.PostgresDatabase;
 import liquibase.exception.LiquibaseException;
 import liquibase.exception.ValidationErrors;
 import liquibase.ext.postgresql.BaseTestCase;
-import liquibase.ext.postgresql.role.RoleOptionsElement;
+import liquibase.ext.postgresql.role.RoleOptions;
 import liquibase.ext.postgresql.role.drop.DropRoleChange;
 import liquibase.sql.Sql;
 import liquibase.statement.SqlStatement;
-import liquibase.util.ISODateFormat;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -41,7 +40,7 @@ public class CreateRoleTest extends BaseTestCase {
 
     change.setRoleName("my_role");
 
-    RoleOptionsElement options = new RoleOptionsElement();
+    RoleOptions options = new RoleOptions();
 
     options.setPassword("my_password");
     options.setConnectionLimit(BigInteger.valueOf(1));
@@ -54,9 +53,9 @@ public class CreateRoleTest extends BaseTestCase {
     options.setReplication(Boolean.TRUE);
 
     Date validUntilDate = new Date();
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-
-    options.setValidUntil(format.format(validUntilDate));
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    String dateString = format.format(validUntilDate);
+    options.setValidUntil(dateString);
 
     change.setOptions(options);
 
@@ -76,7 +75,7 @@ public class CreateRoleTest extends BaseTestCase {
     assertEquals(Boolean.FALSE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getLoginAllowed());
     assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getSuperUser());
     assertEquals(Boolean.TRUE, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getReplication());
-    assertEquals(new ISODateFormat().parse(format.format(validUntilDate)), ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getValidUntil());
+    assertEquals(dateString, ((CreateRoleStatement) sqlStatements[0]).getRoleOptions().getValidUntil());
   }
 
   @Test
@@ -84,7 +83,7 @@ public class CreateRoleTest extends BaseTestCase {
     // given
     CreateRoleChange change = new CreateRoleChange();
     change.setRoleName("my_role");
-    RoleOptionsElement options = new RoleOptionsElement();
+    RoleOptions options = new RoleOptions();
     options.setPassword("my_password");
     change.setOptions(options);
 
@@ -153,7 +152,7 @@ public class CreateRoleTest extends BaseTestCase {
     // given
     CreateRoleChange change = new CreateRoleChange();
     change.setRoleName("my_role");
-    RoleOptionsElement options = new RoleOptionsElement();
+    RoleOptions options = new RoleOptions();
     change.setOptions(options);
 
     // when
@@ -169,7 +168,7 @@ public class CreateRoleTest extends BaseTestCase {
     // given
     CreateRoleChange change = new CreateRoleChange();
     change.setRoleName("");
-    RoleOptionsElement options = new RoleOptionsElement();
+    RoleOptions options = new RoleOptions();
     options.setPassword("");
     change.setOptions(options);
 
@@ -198,7 +197,7 @@ public class CreateRoleTest extends BaseTestCase {
 
     // then
     assertEquals("One statement generated", 1, sql.length);
-    assertEquals("Matching statement", "CREATE ROLE my_role SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN CONNECTION LIMIT 1 ENCRYPTED PASSWORD 'my_password' VALID UNTIL '2002-05-30 09:00:00.0'", sql[0].toSql());
+    assertEquals("Matching statement", "CREATE ROLE my_role SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN CONNECTION LIMIT 1 ENCRYPTED PASSWORD 'my_password' VALID UNTIL '2002-05-30T09:00:00'", sql[0].toSql());
 
     // then
     assertEquals("One change given", 1, changeSets.get(1).getChanges().size());

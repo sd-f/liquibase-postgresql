@@ -3,20 +3,15 @@
 package liquibase.ext.postgresql.role;
 
 import java.math.BigInteger;
-import java.text.ParseException;
-import java.util.Date;
 
-import liquibase.logging.LogFactory;
-import liquibase.logging.Logger;
-import liquibase.util.ISODateFormat;
+import liquibase.ext.postgresql.xml.Constants;
+import liquibase.serializer.AbstractLiquibaseSerializable;
 
 /**
  *
  * @author Lucas Reeh <lreeh@tugraz.at>
  */
-public class RoleOptions {
-
-  static Logger LOGGER = LogFactory.getInstance().getLog();
+public class RoleOptions extends AbstractLiquibaseSerializable {
 
   private String password;
   private Boolean superUser;
@@ -27,28 +22,16 @@ public class RoleOptions {
   private BigInteger connectionLimit;
   private Boolean encryptedPassword;
   private Boolean replication;
-  private Date validUntil;
+  private String validUntil;
 
-  public void setAttributesFromElement(RoleOptionsElement optionsElement) {
-    if (optionsElement != null) {
-      password = optionsElement.getPassword();
-      connectionLimit = optionsElement.getConnectionLimit();
-      createDatabase = optionsElement.getCreateDatabase();
-      createRole = optionsElement.getCreateRole();
-      encryptedPassword = optionsElement.getEncryptedPassword();
-      inherit = optionsElement.getInherit();
-      loginAllowed = optionsElement.getLoginAllowed();
-      superUser = optionsElement.getSuperUser();
-      replication = optionsElement.getReplication();
-      validUntil = null;
-      if (optionsElement.getValidUntil() != null) {
-        try {
-          validUntil = new ISODateFormat().parse(optionsElement.getValidUntil());
-        } catch (ParseException ex) {
-          LOGGER.severe("Error parsing options", ex);
-        }
-      }
-    }
+  @Override
+  public String getSerializedObjectName() {
+    return "options";
+  }
+
+  @Override
+  public String getSerializedObjectNamespace() {
+    return Constants.NAMESPACE;
   }
 
   public String getPassword() {
@@ -115,11 +98,11 @@ public class RoleOptions {
     this.encryptedPassword = encryptedPassword;
   }
 
-  public Date getValidUntil() {
+  public String getValidUntil() {
     return validUntil;
   }
 
-  public void setValidUntil(Date validUntil) {
+  public void setValidUntil(String validUntil) {
     this.validUntil = validUntil;
   }
 

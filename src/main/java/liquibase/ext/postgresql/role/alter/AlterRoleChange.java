@@ -6,7 +6,6 @@ import liquibase.change.ChangeMetaData;
 import liquibase.change.DatabaseChange;
 import liquibase.database.Database;
 import liquibase.ext.postgresql.role.RoleChange;
-import liquibase.ext.postgresql.role.RoleOptions;
 import liquibase.statement.SqlStatement;
 
 @DatabaseChange(name = "alterRole", description = "Alter role", priority = ChangeMetaData.PRIORITY_DEFAULT)
@@ -27,12 +26,7 @@ public class AlterRoleChange extends RoleChange {
 
     statement.setRoleName(getRoleName());
 
-    if (getOptions() != null) {
-      RoleOptions optionsData = new RoleOptions();
-      optionsData.setAttributesFromElement(getOptions());
-      statement.setOptions(optionsData);
-    }
-
+    statement.setOptions(getOptions());
     statement.setRenameTo(getRenameTo());
     statement.setSet(getSet());
     statement.setReset(getReset());

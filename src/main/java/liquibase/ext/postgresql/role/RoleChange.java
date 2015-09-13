@@ -11,7 +11,7 @@ import liquibase.change.AbstractChange;
 public abstract class RoleChange extends AbstractChange {
 
   private String roleName;
-  private RoleOptionsElement options;
+  private RoleOptions options;
 
   public String getRoleName() {
     return roleName;
@@ -21,11 +21,11 @@ public abstract class RoleChange extends AbstractChange {
     this.roleName = roleName;
   }
 
-  public RoleOptionsElement getOptions() {
+  public RoleOptions getOptions() {
     return options;
   }
 
-  public void setOptions(RoleOptionsElement options) {
+  public void setOptions(RoleOptions options) {
     this.options = options;
   }
 

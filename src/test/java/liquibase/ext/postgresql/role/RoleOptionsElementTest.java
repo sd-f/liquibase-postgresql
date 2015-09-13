@@ -16,7 +16,7 @@ public class RoleOptionsElementTest {
   @Test
   public void testNamespace() {
     // given
-    RoleOptionsElement element = new RoleOptionsElement();
+    RoleOptions element = new RoleOptions();
 
     // when
     String namespace = element.getSerializedObjectNamespace();
@@ -28,7 +28,7 @@ public class RoleOptionsElementTest {
   @Test
   public void testObjectName() {
     // given
-    RoleOptionsElement element = new RoleOptionsElement();
+    RoleOptions element = new RoleOptions();
 
     // when
     String objectName = element.getSerializedObjectName();
