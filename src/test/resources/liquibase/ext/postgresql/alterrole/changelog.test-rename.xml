@@ -6,11 +6,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
 
-    <changeSet id="cr_03"
+    <changeSet id="ar_02"
                author="Lucas Reeh">
-        <ext:createRole roleName="my_role">
-            <ext:options password="my_password" replication="true" loginAllowed="true"/>
-        </ext:createRole>
+        <ext:alterRole roleName="name">
+            <ext:renameTo name="new_name"/>
+        </ext:alterRole>
     </changeSet>
 
 </databaseChangeLog>

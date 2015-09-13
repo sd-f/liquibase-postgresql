@@ -9,15 +9,15 @@ import java.util.Date;
  *
  * @author Lucas Reeh <lreeh@tugraz.at>
  */
-public class SqlBuilder {
+public class SqlPropertyBuilder {
 
   protected final StringBuilder sql;
 
-  public SqlBuilder(StringBuilder sql) {
+  public SqlPropertyBuilder(StringBuilder sql) {
     this.sql = sql;
   }
 
-  public SqlBuilder append(String value, String propertyName, Boolean addQuotes) {
+  public SqlPropertyBuilder append(String value, String propertyName, Boolean addQuotes) {
     if (value != null) {
       sql.append(propertyName);
       sql.append(" ");
@@ -33,12 +33,12 @@ public class SqlBuilder {
     return this;
   }
 
-  public SqlBuilder append(String value, String propertyName) {
+  public SqlPropertyBuilder append(String value, String propertyName) {
     append(value, propertyName, true);
     return this;
   }
 
-  public SqlBuilder append(Date value, String propertyName) {
+  public SqlPropertyBuilder append(Date value, String propertyName) {
     String stringValue = null;
     if (value != null) {
       stringValue = value.toString();
@@ -47,7 +47,7 @@ public class SqlBuilder {
     return this;
   }
 
-  public SqlBuilder append(BigInteger value, String propertyName) {
+  public SqlPropertyBuilder append(BigInteger value, String propertyName) {
     String stringValue = null;
     if (value != null) {
       stringValue = value.toString();
@@ -56,7 +56,7 @@ public class SqlBuilder {
     return this;
   }
 
-  public SqlBuilder append(Boolean value, String trueValue, String falseValue, Boolean defaultValue) {
+  public SqlPropertyBuilder append(Boolean value, String trueValue, String falseValue, Boolean defaultValue) {
     if (value != null) {
       if (value) {
         sql.append(trueValue);
@@ -75,7 +75,7 @@ public class SqlBuilder {
     return this;
   }
 
-  public SqlBuilder append(Boolean value, String trueValue, String falseValue) {
+  public SqlPropertyBuilder append(Boolean value, String trueValue, String falseValue) {
     append(value, trueValue, falseValue, null);
     return this;
   }

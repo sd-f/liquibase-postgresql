@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
+
+    <changeSet id="ar_21"
+               author="Lucas Reeh">
+        <ext:alterRole roleName="name">
+            <ext:reset parameter="param1"/>
+        </ext:alterRole>
+    </changeSet>
+
+    <changeSet id="ar_22"
+               author="Lucas Reeh">
+        <ext:alterRole roleName="ALL">
+            <ext:reset parameter="ALL"/>
+        </ext:alterRole>
+    </changeSet>
+
+    <changeSet id="ar_23"
+               author="Lucas Reeh">
+        <ext:alterRole roleName="name">
+            <ext:reset parameter="param1" inDatabase="database1"/>
+        </ext:alterRole>
+    </changeSet>
+
+    <changeSet id="ar_24"
+               author="Lucas Reeh">
+        <ext:alterRole roleName="ALL">
+            <ext:reset parameter="param1" inDatabase=""/>
+        </ext:alterRole>
+    </changeSet>
+
+
+</databaseChangeLog>

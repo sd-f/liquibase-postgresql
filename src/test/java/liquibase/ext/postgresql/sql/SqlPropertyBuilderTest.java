@@ -12,12 +12,12 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Lucas Reeh <lreeh@tugraz.at>
  */
-public class SqlBuilderTest {
+public class SqlPropertyBuilderTest {
 
   @Test
   public void append() {
     // given
-    SqlBuilder builder = new SqlBuilder(new StringBuilder());
+    SqlPropertyBuilder builder = new SqlPropertyBuilder(new StringBuilder());
     String value = "A String";
     String propertyName = "PROPERTY";
 
@@ -31,7 +31,7 @@ public class SqlBuilderTest {
   @Test
   public void appendEmptyString() {
     // given
-    SqlBuilder builder = new SqlBuilder(new StringBuilder());
+    SqlPropertyBuilder builder = new SqlPropertyBuilder(new StringBuilder());
     String value = "";
     String propertyName = "PROPERTY";
 
@@ -45,7 +45,7 @@ public class SqlBuilderTest {
   @Test
   public void appendNull() {
     // given
-    SqlBuilder builder = new SqlBuilder(new StringBuilder());
+    SqlPropertyBuilder builder = new SqlPropertyBuilder(new StringBuilder());
     String value = null;
     String propertyName = "PROPERTY";
 
@@ -59,7 +59,7 @@ public class SqlBuilderTest {
   @Test
   public void appendDate() {
     // given
-    SqlBuilder builder = new SqlBuilder(new StringBuilder());
+    SqlPropertyBuilder builder = new SqlPropertyBuilder(new StringBuilder());
     Date value = new Date();
     String propertyName = "PROPERTY";
 
@@ -73,7 +73,7 @@ public class SqlBuilderTest {
   @Test
   public void appendDateNull() {
     // given
-    SqlBuilder builder = new SqlBuilder(new StringBuilder());
+    SqlPropertyBuilder builder = new SqlPropertyBuilder(new StringBuilder());
     Date value = null;
     String propertyName = "PROPERTY";
 
@@ -87,7 +87,7 @@ public class SqlBuilderTest {
   @Test
   public void appendBooleanTrue() {
     // given
-    SqlBuilder builder = new SqlBuilder(new StringBuilder());
+    SqlPropertyBuilder builder = new SqlPropertyBuilder(new StringBuilder());
     Boolean value = true;
     String trueValue = "PROPERTY";
     String valueFalse = "NOPROPERTY";
@@ -102,7 +102,7 @@ public class SqlBuilderTest {
   @Test
   public void appendBooleanFalse() {
     // given
-    SqlBuilder builder = new SqlBuilder(new StringBuilder());
+    SqlPropertyBuilder builder = new SqlPropertyBuilder(new StringBuilder());
     Boolean value = false;
     String trueValue = "PROPERTY";
     String valueFalse = "NOPROPERTY";
@@ -117,7 +117,7 @@ public class SqlBuilderTest {
   @Test
   public void appendBooleanNull() {
     // given
-    SqlBuilder builder = new SqlBuilder(new StringBuilder());
+    SqlPropertyBuilder builder = new SqlPropertyBuilder(new StringBuilder());
     Boolean value = null;
     String trueValue = "PROPERTY";
     String valueFalse = "NOPROPERTY";
@@ -132,7 +132,7 @@ public class SqlBuilderTest {
   @Test
   public void appendBooleanDefaultTrue() {
     // given
-    SqlBuilder builder = new SqlBuilder(new StringBuilder());
+    SqlPropertyBuilder builder = new SqlPropertyBuilder(new StringBuilder());
     Boolean value = null;
     String trueValue = "PROPERTY";
     String valueFalse = "NOPROPERTY";
@@ -147,7 +147,7 @@ public class SqlBuilderTest {
   @Test
   public void appendBooleanDefaultFalse() {
     // given
-    SqlBuilder builder = new SqlBuilder(new StringBuilder());
+    SqlPropertyBuilder builder = new SqlPropertyBuilder(new StringBuilder());
     Boolean value = null;
     String trueValue = "PROPERTY";
     String valueFalse = "NOPROPERTY";

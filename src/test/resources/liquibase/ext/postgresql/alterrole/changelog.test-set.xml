@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext https://softwaredesign.foundation/xsd/liquibase/dbchangelog-ext.xsd">
+
+    <changeSet id="ar_11"
+               author="Lucas Reeh">
+        <ext:alterRole roleName="name">
+            <ext:set parameter="param1" fromCurrent="true"/>
+        </ext:alterRole>
+    </changeSet>
+
+    <changeSet id="ar_12"
+               author="Lucas Reeh">
+        <ext:alterRole roleName="ALL">
+            <ext:set parameter="param1" value="value"/>
+        </ext:alterRole>
+    </changeSet>
+
+    <changeSet id="ar_13"
+               author="Lucas Reeh">
+        <ext:alterRole roleName="name">
+            <ext:set parameter="param1" inDatabase="database1" value="value"/>
+        </ext:alterRole>
+    </changeSet>
+
+    <changeSet id="ar_14"
+               author="Lucas Reeh">
+        <ext:alterRole roleName="ALL">
+            <ext:set parameter="param1" inDatabase="" value="value"/>
+        </ext:alterRole>
+    </changeSet>
+
+    <changeSet id="ar_15"
+               author="Lucas Reeh">
+        <ext:alterRole roleName="ALL">
+            <ext:set parameter="param1" fromCurrent="false" value="DEFAULT"/>
+        </ext:alterRole>
+    </changeSet>
+
+    <changeSet id="ar_16"
+               author="Lucas Reeh">
+        <ext:alterRole roleName="ALL">
+            <ext:set parameter="param1" fromCurrent="false" value="value"/>
+        </ext:alterRole>
+    </changeSet>
+
+</databaseChangeLog>

@@ -40,13 +40,27 @@
                 <xs:element name="reset" type="alterRoleResetType"/>
                 <xs:element name="renameTo" type="alterRoleRenameToType"/>
             </xs:choice>
-            <xs:attribute name="roleName" type="alterRoleNameLookup" use="optional"/>
-            <xs:attribute name="inDatabase" type="xs:string"/>
+            <xs:attribute name="roleName" type="alterRoleNameType"/>
         </xs:complexType>
     </xs:element>
 
+    <xs:simpleType name="alterRoleNameType">
+        <xs:annotation>
+            <xs:appinfo>
+                <xs:documentation>
+                    role_name or ALL
+                </xs:documentation>
+            </xs:appinfo>
+        </xs:annotation>
+        <xs:union memberTypes="alterRoleNameAnyString alterRoleNameLookup"></xs:union>
+    </xs:simpleType>
+
+    <xs:simpleType name="alterRoleNameAnyString">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
     <xs:simpleType name="alterRoleNameLookup">
-        <xs:restriction base="xs:string">
+        <xs:restriction base="xs:token">
             <xs:enumeration value="ALL"/>
         </xs:restriction>
     </xs:simpleType>
@@ -66,28 +80,60 @@
 
     <xs:complexType name="alterRoleSetType">
         <xs:attribute name="parameter" type="xs:string" use="required"/>
-        <xs:attribute name="value" type="alterRoleSetTypeParameterValueLookup"/>
+        <xs:attribute name="value" type="alterRoleSetParameterValueType"/>
         <xs:attribute name="fromCurrent" type="boolLookup"/>
+        <xs:attribute name="inDatabase" type="xs:string"/>
     </xs:complexType>
 
-    <xs:simpleType name="alterRoleSetTypeParameterValueLookup">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="DEFAULT"/>
+    <xs:simpleType name="alterRoleSetParameterValueType">
+        <xs:annotation>
+            <xs:appinfo>
+                <xs:documentation>
+                    any_value or DEFAULT
+                </xs:documentation>
+            </xs:appinfo>
+        </xs:annotation>
+        <xs:union memberTypes="alterRoleSetParameterValueAnyString alterRoleSetParameterValueLookup"></xs:union>
+    </xs:simpleType>
+
+    <xs:simpleType name="alterRoleSetParameterValueAnyString">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="alterRoleSetParameterValueLookup">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ALL"/>
         </xs:restriction>
     </xs:simpleType>
 
     <xs:complexType name="alterRoleResetType">
-        <xs:attribute name="parameter" type="alterRoleResetTypeParameterValueLookup"/>
+        <xs:attribute name="parameter" type="alterRoleResetParameterNameType" use="required"/>
+        <xs:attribute name="inDatabase" type="xs:string"/>
     </xs:complexType>
 
-    <xs:simpleType name="alterRoleResetTypeParameterValueLookup">
-        <xs:restriction base="xs:string">
+    <xs:simpleType name="alterRoleResetParameterNameType">
+        <xs:annotation>
+            <xs:appinfo>
+                <xs:documentation>
+                    parameter_name or ALL
+                </xs:documentation>
+            </xs:appinfo>
+        </xs:annotation>
+        <xs:union memberTypes="alterRoleResetParameterNameAnyString alterRoleResetParameterNameLookup"></xs:union>
+    </xs:simpleType>
+
+    <xs:simpleType name="alterRoleResetParameterNameAnyString">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="alterRoleResetParameterNameLookup">
+        <xs:restriction base="xs:token">
             <xs:enumeration value="ALL"/>
         </xs:restriction>
     </xs:simpleType>
 
     <xs:complexType name="alterRoleRenameToType">
-        <xs:attribute name="schema" type="xs:string" use="required"></xs:attribute>
+        <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
     </xs:complexType>
 
     <!-- schema -->

@@ -52,7 +52,7 @@ public class RoleOptionsSqlBuilderTest {
     String sqlString = builder.append(options).getSql().toString();
 
     // then
-    assertEquals("NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN", sqlString.trim());
+    assertEquals("", sqlString.trim());
   }
 
 }

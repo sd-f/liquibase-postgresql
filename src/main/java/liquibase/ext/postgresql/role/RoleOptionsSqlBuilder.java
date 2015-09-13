@@ -3,13 +3,13 @@
 package liquibase.ext.postgresql.role;
 
 import liquibase.database.Database;
-import liquibase.ext.postgresql.sql.SqlBuilder;
+import liquibase.ext.postgresql.sql.SqlPropertyBuilder;
 
 /**
  *
  * @author Lucas Reeh <lreeh@tugraz.at>
  */
-public class RoleOptionsSqlBuilder extends SqlBuilder {
+public class RoleOptionsSqlBuilder extends SqlPropertyBuilder {
 
   Database database;
 
@@ -19,11 +19,11 @@ public class RoleOptionsSqlBuilder extends SqlBuilder {
   }
 
   public RoleOptionsSqlBuilder append(RoleOptions roleOptions) {
-    append(roleOptions.getSuperUser(), "SUPERUSER", "NOSUPERUSER", false);
-    append(roleOptions.getCreateDatabase(), "CREATEDB", "NOCREATEDB", false);
-    append(roleOptions.getCreateRole(), "CREATEROLE", "NOCREATEROLE", false);
-    append(roleOptions.getInherit(), "INHERIT", "NOINHERIT", false);
-    append(roleOptions.getLoginAllowed(), "LOGIN", "NOLOGIN", false);
+    append(roleOptions.getSuperUser(), "SUPERUSER", "NOSUPERUSER");
+    append(roleOptions.getCreateDatabase(), "CREATEDB", "NOCREATEDB");
+    append(roleOptions.getCreateRole(), "CREATEROLE", "NOCREATEROLE");
+    append(roleOptions.getInherit(), "INHERIT", "NOINHERIT");
+    append(roleOptions.getLoginAllowed(), "LOGIN", "NOLOGIN");
 
     append(roleOptions.getConnectionLimit(), "CONNECTION LIMIT");
 

@@ -230,7 +230,7 @@ public class CreateRoleTest extends BaseTestCase {
 
     // then
     assertEquals("One statement generated", 1, sql.length);
-    assertEquals("Matching statement", "CREATE ROLE my_role NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN PASSWORD 'my_password' REPLICATION", sql[0].toSql());
+    assertEquals("Matching statement", "CREATE ROLE my_role LOGIN PASSWORD 'my_password' REPLICATION", sql[0].toSql());
 
   }
 
