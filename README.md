@@ -1,4 +1,4 @@
-# Usages
+# Liquibase-Postgresql Maven-Plugin [![Build Status](https://softwaredesign.foundation/jenkins/buildStatus/icon?job=liquibase-postgresql-maven-plugin-build)](https://softwaredesign.foundation/jenkins/job/liquibase-postgresql-maven-plugin-build)
 
 ## Jira
 
