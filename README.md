@@ -38,7 +38,7 @@ https://softwaredesign.foundation/jira/projects/LPMP
         <dependency>
             <groupId>org.liquibase.ext</groupId>
             <artifactId>liquibase-postgresql</artifactId>
-            <version>3.4-RC1</version>
+            <version>3.4</version>
         </dependency>
 		<!-- ... -->
 	</dependencies>
@@ -58,7 +58,7 @@ https://softwaredesign.foundation/jira/projects/LPMP
                     <dependency>
                         <groupId>org.liquibase.ext</groupId>
                         <artifactId>liquibase-postgresql</artifactId>
-                        <version>3.4-RC1</version>
+                        <version>3.4</version>
                     </dependency>
                 </dependencies>
             </plugin>
