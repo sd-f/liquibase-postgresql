@@ -93,3 +93,7 @@ https://softwaredesign.foundation/jira/projects/LPMP
 ## Features
 
 See https://github.com/sd-f/liquibase-postgresql/releases
+
+## Info
+
+Fork from https://github.com/liquibase/liquibase-postgresql
