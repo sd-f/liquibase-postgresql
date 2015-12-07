@@ -8,7 +8,7 @@ https://softwaredesign.foundation/jira/projects/LPMP
 
 ```xml
 
-	<!-- snapshot repo -->
+	<!-- sd.f repo -->
 	<repositories>
         <repository>
             <id>sd.f-releases</id>
@@ -16,6 +16,14 @@ https://softwaredesign.foundation/jira/projects/LPMP
             <url>https://softwaredesign.foundation/nexus/content/repositories/sd.f-releases</url>
         </repository>
     </repositories>
+    <!-- sd.f plugin repo -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>sd.f-releases</id>
+            <name>softwaredesign.foundation Releases Plugins</name>
+            <url>${comuni.nexus.repo.url}/sd.f-releases</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <!-- dependencies needed -->
 	<dependencies>
