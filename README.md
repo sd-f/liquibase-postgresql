@@ -90,4 +90,6 @@ https://softwaredesign.foundation/jira/projects/LPMP
 </databaseChangeLog>
 ```
 
-See test resources directory for more examples
+## Features
+
+See https://github.com/sd-f/liquibase-postgresql/releases
