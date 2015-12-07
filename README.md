@@ -15,14 +15,6 @@ https://softwaredesign.foundation/jira/projects/LPMP
             <name>softwaredesign.foundation Releases</name>
             <url>https://softwaredesign.foundation/nexus/content/repositories/sd.f-releases</url>
         </repository>
-        <repository>
-            <id>sd.f-snapshots</id>
-            <name>softwaredesign.foundation Snapshots</name>
-            <url>https://softwaredesign.foundation/nexus/content/repositories/sd.f-snapshots</url>
-			<snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
     </repositories>
 
     <!-- dependencies needed -->
